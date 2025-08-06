@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const categoryController = require('../controllers/CategoryController');
+const categoryController = require('../controllers/categoryController');
 const { upload, uploadToCloudinary } = require('../middleware/CategoryUploadMiddleware');
 
 // Error handler middleware
@@ -29,9 +29,10 @@ const handleUploadErrors = (err, req, res, next) => {
             });
         }
 
+
         return res.status(500).json({
             success: false,
-            error: 'Upload failed'
+            error: 'Upload failed, try again'
         });
     }
     next();
