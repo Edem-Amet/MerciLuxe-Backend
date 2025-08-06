@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const heroController = require('../controllers/heroController');
+const heroController = require('../controllers/HeroController');
 const { upload, uploadToCloudinary } = require('../middleware/HeroUploadMiddleware');
 
 // Error handler middleware
