@@ -15,7 +15,7 @@ const defaultOrigins = [
     'http://localhost:5173',
     'http://172.20.10.4:5173', // Your current mobile IP
     'https://lifelongreaders-client.onrender.com',
-    'http://192.168.1.*', // Allow all devices on local network
+    'http://192.168.1.181:5173', // Allow all devices on local network
     'http://10.132.146.62:5173',    // Common home network range
     'http://[::1]'        // IPv6 localhost
 ];
@@ -103,6 +103,7 @@ app.use('/images', express.static(imagesDir, {
 
 // === Basic API Routes ===
 const heroRoutes = require('./routes/HeroRoutes');
+const categoryRoutes = require('./routes/CategoryRoutes');
 
 
 // === Enhanced Test Route ===
@@ -132,6 +133,7 @@ app.get('/test-images', (req, res) => {
 
 // === Routes ===
 app.use('/api/hero', heroRoutes);
+app.use('/api/category', categoryRoutes);
 
 
 // === 404 Handler ===
@@ -176,8 +178,8 @@ async function startServer() {
         await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            serverSelectionTimeoutMS: 10000,
-            connectTimeoutMS: 10000
+            serverSelectionTimeoutMS: 50000,
+            connectTimeoutMS: 50000
         });
 
         console.log('✅ Connected to MongoDB');
