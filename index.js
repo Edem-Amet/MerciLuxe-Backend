@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 const defaultOrigins = [
     'http://localhost:5173',
     'http://172.20.10.4:5173', // Your current mobile IP
-    'https://lifelongreaders-client.onrender.com',
+    'https://merciluxe-backend.onrender.com',
     'http://192.168.1.181:5173', // Allow all devices on local network
     'http://10.132.146.62:5173',    // Common home network range
     'http://[::1]'        // IPv6 localhost
