@@ -104,6 +104,8 @@ app.use('/images', express.static(imagesDir, {
 // === Basic API Routes ===
 const heroRoutes = require('./routes/HeroRoutes');
 const categoryRoutes = require('./routes/CategoryRoutes');
+const jewelryRoutes = require('./routes/JewelryRoutes');
+const orderRoutes = require('./routes/OrderRoutes');
 
 
 // === Enhanced Test Route ===
@@ -134,6 +136,9 @@ app.get('/test-images', (req, res) => {
 // === Routes ===
 app.use('/api/hero', heroRoutes);
 app.use('/api/category', categoryRoutes);
+app.use('/api/jewelry', jewelryRoutes);
+app.use('/api/order', orderRoutes);
+app.use('/api/payment', orderRoutes);
 
 
 // === 404 Handler ===
