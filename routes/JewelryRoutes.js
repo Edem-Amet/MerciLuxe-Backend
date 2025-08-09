@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const jewelryController = require('../controllers/jewelryController');
+const jewelryController = require('../controllers/JewelryController');
 const { upload, uploadToCloudinary } = require('../middleware/JewelryUploadMiddleware');
 
 // Error handler middleware for jewelry uploads

@@ -16,8 +16,8 @@ const defaultOrigins = [
     'http://172.20.10.4:5173', // Your current mobile IP
     'https://merciluxe-frontend.onrender.com',
     'http://192.168.1.181:5173', // Allow all devices on local network
-    'http://10.132.146.62:5173',    // Common home network range
-    'http://[::1]'        // IPv6 localhost
+    'http://10.132.146.62:5173', // Common home network range
+    'http://[::1]'   // IPv6 localhost
 ];
 
 const allowedOrigins = [...new Set([
@@ -137,8 +137,8 @@ app.get('/test-images', (req, res) => {
 app.use('/api/hero', heroRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/jewelry', jewelryRoutes);
-app.use('/api/order', orderRoutes);
-app.use('/api/payment', orderRoutes);
+app.use('/api/orders', orderRoutes);
+
 
 
 // === 404 Handler ===
@@ -188,6 +188,13 @@ async function startServer() {
         });
 
         console.log('✅ Connected to MongoDB');
+
+        try {
+            await mongoose.connection.db.collection('orders').dropIndex('paymentReference_1');
+            console.log('✅ Dropped old paymentReference index');
+        } catch (error) {
+            console.log('ℹ️ Old index not found or already dropped');
+        }
 
         const server = app.listen(PORT, '0.0.0.0', () => {
             const localIp = getLocalIp();

@@ -53,12 +53,16 @@ const OrderSchema = new mongoose.Schema({
     },
     paymentReference: {
         type: String,
-        default: null
+        sparse: true, // This allows multiple null values but ensures unique non-null values
+        default: undefined // Use undefined instead of null to avoid the duplicate key issue
     },
     isDelivered: {
         type: Boolean,
         default: false
     }
 }, { timestamps: true });
+
+// Create a sparse index on paymentReference to allow multiple null/undefined values
+OrderSchema.index({ paymentReference: 1 }, { sparse: true, unique: true });
 
 module.exports = mongoose.model('Order', OrderSchema);
