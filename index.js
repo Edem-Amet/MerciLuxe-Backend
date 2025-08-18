@@ -101,13 +101,13 @@ app.use('/images', express.static(imagesDir, {
     }
 }));
 
-
 // === Basic API Routes ===
 const heroRoutes = require('./routes/HeroRoutes');
 const categoryRoutes = require('./routes/CategoryRoutes');
 const jewelryRoutes = require('./routes/JewelryRoutes');
 const orderRoutes = require('./routes/OrderRoutes');
 const havenRoutes = require('./routes/HavenRoutes');
+const gentRoutes = require('./routes/GentRoutes');
 
 
 // === Enhanced Test Route ===
@@ -141,6 +141,7 @@ app.use('/api/category', categoryRoutes);
 app.use('/api/jewelry', jewelryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/queenshaven', havenRoutes);
+app.use('/api/gents', gentRoutes);
 
 
 
