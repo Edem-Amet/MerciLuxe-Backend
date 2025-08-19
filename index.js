@@ -108,6 +108,8 @@ const jewelryRoutes = require('./routes/JewelryRoutes');
 const orderRoutes = require('./routes/OrderRoutes');
 const havenRoutes = require('./routes/HavenRoutes');
 const gentRoutes = require('./routes/GentRoutes');
+const cooperateRoutes = require('./routes/CooperateRoutes');
+const souvenirRoutes = require('./routes/SouvenirRoutes');
 
 
 // === Enhanced Test Route ===
@@ -142,7 +144,8 @@ app.use('/api/jewelry', jewelryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/queenshaven', havenRoutes);
 app.use('/api/gents', gentRoutes);
-
+app.use('/api/cooperate', cooperateRoutes);
+app.use('/api/souvenirs', souvenirRoutes);
 
 
 // === 404 Handler ===
