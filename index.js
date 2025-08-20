@@ -110,7 +110,7 @@ const havenRoutes = require('./routes/HavenRoutes');
 const gentRoutes = require('./routes/GentRoutes');
 const cooperateRoutes = require('./routes/CooperateRoutes');
 const souvenirRoutes = require('./routes/SouvenirRoutes');
-
+const AdminRoutes = require('./routes/AdminRoutes');
 
 // === Enhanced Test Route ===
 app.get('/test-images', (req, res) => {
@@ -146,6 +146,7 @@ app.use('/api/queenshaven', havenRoutes);
 app.use('/api/gents', gentRoutes);
 app.use('/api/cooperate', cooperateRoutes);
 app.use('/api/souvenirs', souvenirRoutes);
+app.use('/api/admin', AdminRoutes);
 
 
 // === 404 Handler ===
@@ -157,6 +158,7 @@ app.use((req, res) => {
         method: req.method
     });
 });
+
 
 // === Global Error Handler ===
 app.use((err, req, res, next) => {
@@ -170,6 +172,7 @@ app.use((err, req, res, next) => {
         })
     });
 });
+
 
 // === Utility Functions ===
 function getLocalIp() {
