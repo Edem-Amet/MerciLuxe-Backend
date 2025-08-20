@@ -110,6 +110,7 @@ const havenRoutes = require('./routes/HavenRoutes');
 const gentRoutes = require('./routes/GentRoutes');
 const cooperateRoutes = require('./routes/CooperateRoutes');
 const souvenirRoutes = require('./routes/SouvenirRoutes');
+const BeadRoutes = require('./routes/BeadRoutes');
 const AdminRoutes = require('./routes/AdminRoutes');
 
 // === Enhanced Test Route ===
@@ -146,6 +147,7 @@ app.use('/api/queenshaven', havenRoutes);
 app.use('/api/gents', gentRoutes);
 app.use('/api/cooperate', cooperateRoutes);
 app.use('/api/souvenirs', souvenirRoutes);
+app.use('/api/beads', BeadRoutes);
 app.use('/api/admin', AdminRoutes);
 
 
