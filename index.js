@@ -15,7 +15,7 @@ const defaultOrigins = [
     'http://localhost:5173',
     'http://172.20.10.4:5173', // Your current mobile IP
     'https://merciluxe-frontend.onrender.com',
-    'http://192.168.1.181:5173', // Allow all devices on local network
+    'http://10.132.111.55:5173', // Allow all devices on local network
     'http://10.132.146.62:5173', // Common home network range
     'http://[::1]'   // IPv6 localhost
 ];
@@ -111,6 +111,7 @@ const gentRoutes = require('./routes/GentRoutes');
 const cooperateRoutes = require('./routes/CooperateRoutes');
 const souvenirRoutes = require('./routes/SouvenirRoutes');
 const BeadRoutes = require('./routes/BeadRoutes');
+const SpecialRoutes = require('./routes/SpecialRoutes')
 const AdminRoutes = require('./routes/AdminRoutes');
 
 // === Enhanced Test Route ===
@@ -148,6 +149,7 @@ app.use('/api/gents', gentRoutes);
 app.use('/api/cooperate', cooperateRoutes);
 app.use('/api/souvenirs', souvenirRoutes);
 app.use('/api/beads', BeadRoutes);
+app.use('/api/special', SpecialRoutes)
 app.use('/api/admin', AdminRoutes);
 
 
