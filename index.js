@@ -15,7 +15,7 @@ const defaultOrigins = [
     'http://localhost:5173',
     'http://172.20.10.4:5173', // Your current mobile IP
     'https://merciluxe-frontend.onrender.com',
-    'http://10.132.111.55:5173', // Allow all devices on local network
+    'http://192.168.6.155:5173', // Allow all devices on local network
     'http://10.132.146.62:5173', // Common home network range
     'http://[::1]'   // IPv6 localhost
 ];
