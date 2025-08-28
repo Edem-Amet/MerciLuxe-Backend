@@ -157,8 +157,9 @@ exports.verifyPayment = async (req, res) => {
                 });
             }
 
-            // Send confirmation email
+            // Send confirmation emails
             await sendOrderConfirmationEmail(order, data.amount / 100); // Convert from kobo
+            await sendAdminOrderNotification(order, data.amount / 100); // Convert from kobo
 
             return res.json({
                 success: true,
@@ -252,7 +253,7 @@ const sendOrderConfirmationEmail = async (order, paidAmount) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🎉 Order Confirmation</h1>
+                    <h1> Order Confirmation</h1>
                     <p>Thank you for your purchase!</p>
                 </div>
                 
@@ -289,7 +290,7 @@ const sendOrderConfirmationEmail = async (order, paidAmount) => {
                     
                     <p>🚚 Your order will be delivered to the address provided on <strong>${new Date(order.deliveryDate).toLocaleDateString()}</strong>.</p>
                     
-                    <p>💝 We haven't forgotten about you! Your beautiful jewelry pieces are being prepared with care and will be delivered right on time.</p>
+                    <p>💝 Your beautiful package is being prepared with care and excellence. Will be delivered right on time.</p>
                     
                     <p>If you have any questions about your order, please don't hesitate to contact us.</p>
                     
@@ -297,8 +298,8 @@ const sendOrderConfirmationEmail = async (order, paidAmount) => {
                     
                     <div class="footer">
                         <p>Best regards,<br>
-                        <strong>Your Jewelry Store Team</strong></p>
-                        <p>This is an automated message. Please do not reply to this email.</p>
+                        <strong> Merciluxe </strong></p>
+                        <p> Feel Free to send any questions. Will be processed to give you appropriate responses</p>
                     </div>
                 </div>
             </div>
@@ -308,7 +309,7 @@ const sendOrderConfirmationEmail = async (order, paidAmount) => {
 
         const mailOptions = {
             from: {
-                name: 'Your Jewelry Store',
+                name: 'Merciluxe',
                 address: process.env.EMAIL_USER
             },
             to: order.customer.email,
@@ -321,6 +322,153 @@ const sendOrderConfirmationEmail = async (order, paidAmount) => {
 
     } catch (error) {
         console.error('Email sending error:', error);
+        // Don't throw error - we don't want to fail the payment verification if email fails
+    }
+};
+
+// Send admin order notification email
+const sendAdminOrderNotification = async (order, paidAmount) => {
+    try {
+        const itemsList = order.items.map(item =>
+            `<li style="margin-bottom: 10px;">
+                <strong>${item.title}</strong> - Quantity: ${item.quantity} - GH₵${item.price.toFixed(2)} each
+            </li>`
+        ).join('');
+
+        const adminEmailHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    background-color: #f9f9f9;
+                }
+                .header {
+                    background-color: #FF6B35;
+                    color: white;
+                    padding: 20px;
+                    text-align: center;
+                    border-radius: 5px 5px 0 0;
+                }
+                .content {
+                    background-color: white;
+                    padding: 30px;
+                    border-radius: 0 0 5px 5px;
+                }
+                .order-details {
+                    background-color: #f0f0f0;
+                    padding: 20px;
+                    margin: 20px 0;
+                    border-radius: 5px;
+                }
+                .items-list {
+                    margin: 15px 0;
+                    padding-left: 20px;
+                }
+                .total {
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: #FF6B35;
+                    margin-top: 15px;
+                }
+                .urgent {
+                    background-color: #ffebcc;
+                    border-left: 4px solid #FF6B35;
+                    padding: 15px;
+                    margin: 20px 0;
+                }
+                .footer {
+                    text-align: center;
+                    margin-top: 30px;
+                    color: #666;
+                    font-size: 14px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>🚨 New Order Alert</h1>
+                    <p>Payment Confirmed - Action Required</p>
+                </div>
+                
+                <div class="content">
+                    <div class="urgent">
+                        <strong>⚡ URGENT:</strong> A new order has been placed and paid for. Please process immediately.
+                    </div>
+                    
+                    <div class="order-details">
+                        <h3>📋 Order Information:</h3>
+                        <p><strong>Order ID:</strong> ${order._id}</p>
+                        <p><strong>Order Date:</strong> ${new Date(order.createdAt).toLocaleDateString()} at ${new Date(order.createdAt).toLocaleTimeString()}</p>
+                        <p><strong>Required Delivery Date:</strong> ${new Date(order.deliveryDate).toLocaleDateString()}</p>
+                        <p><strong>Payment Method:</strong> ${order.paymentMethod.toUpperCase()}</p>
+                        <p><strong>Payment Reference:</strong> ${order.paymentReference}</p>
+                        <p><strong>Payment Status:</strong> ✅ CONFIRMED</p>
+                        
+                        <h4>📦 Items to Prepare:</h4>
+                        <ul class="items-list">
+                            ${itemsList}
+                        </ul>
+                        
+                        <div class="total">
+                            Total Revenue: GH₵${paidAmount.toFixed(2)}
+                        </div>
+                    </div>
+                    
+                    <div class="order-details">
+                        <h3>👤 Customer Details:</h3>
+                        <p><strong>Name:</strong> ${order.customer.name}</p>
+                        <p><strong>Phone:</strong> ${order.customer.phone}</p>
+                        <p><strong>Email:</strong> ${order.customer.email}</p>
+                        <p><strong>Delivery Address:</strong> ${order.customer.address}</p>
+                    </div>
+                    
+                    <div class="urgent">
+                        <h3>🎯 Next Actions Required:</h3>
+                        <ol>
+                            <li><strong>Confirm inventory availability</strong></li>
+                            <li><strong>Prepare items for packaging</strong></li>
+                            <li><strong>Schedule delivery for ${new Date(order.deliveryDate).toLocaleDateString()}</strong></li>
+                            <li><strong>Update order status in admin panel</strong></li>
+                        </ol>
+                    </div>
+                    
+                    <p><strong>Time Sensitive:</strong> Customer expects delivery on ${new Date(order.deliveryDate).toLocaleDateString()}. Please ensure timely processing.</p>
+                    
+                    <div class="footer">
+                        <p>Merciluxe Admin System<br>
+                        <small>This is an automated notification</small></p>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        `;
+
+        const adminMailOptions = {
+            from: {
+                name: 'Merciluxe System',
+                address: process.env.EMAIL_USER
+            },
+            to: process.env.ADMIN_EMAIL, // Add this environment variable
+            subject: `🚨 NEW ORDER ALERT - Order #${order._id.toString().slice(-8)} - GH₵${paidAmount.toFixed(2)}`,
+            html: adminEmailHtml
+        };
+
+        await transporter.sendMail(adminMailOptions);
+        console.log('Admin notification email sent successfully to:', process.env.ADMIN_EMAIL);
+
+    } catch (error) {
+        console.error('Admin email sending error:', error);
         // Don't throw error - we don't want to fail the payment verification if email fails
     }
 };
