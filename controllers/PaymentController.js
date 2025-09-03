@@ -22,11 +22,11 @@ exports.initiatePayment = async (req, res) => {
         const { orderId, amount, email, phone, method, callbackUrl } = req.body;
 
         // Validate required fields
-        if (!orderId || !amount || !email || !method) {
-            console.error('Missing required fields:', { orderId: !!orderId, amount: !!amount, email: !!email, method: !!method });
+        if (!orderId || !amount || !method) {
+            console.error('Missing required fields:', { orderId: !!orderId, amount: !!amount, method: !!method });
             return res.status(400).json({
                 success: false,
-                message: 'Missing required fields: orderId, amount, email, and method are required'
+                message: 'Missing required fields: orderId, amount, and method are required'
             });
         }
 
@@ -43,8 +43,11 @@ exports.initiatePayment = async (req, res) => {
         console.log('Order found:', order._id);
         console.log('Paystack secret key available:', !!paystackSecretKey);
 
+        // Use provided email or fallback to order email or default
+        const paymentEmail = email || order.customer.email || 'customer@example.com';
+
         const paystackPayload = {
-            email,
+            email: paymentEmail,
             amount, // Amount already in kobo from frontend
             callback_url: callbackUrl || `${process.env.FRONTEND_URL}/payment/callback`,
             metadata: {
@@ -57,7 +60,7 @@ exports.initiatePayment = async (req, res) => {
                     {
                         display_name: "Phone",
                         variable_name: "phone",
-                        value: phone || 'N/A'
+                        value: phone || order.customer.phone || 'N/A'
                     }
                 ]
             }
@@ -66,8 +69,9 @@ exports.initiatePayment = async (req, res) => {
         // Set specific channels for mobile money
         if (method === 'momo') {
             paystackPayload.channels = ['mobile_money'];
-            if (phone) {
-                paystackPayload.mobile_money = { phone };
+            const customerPhone = phone || order.customer.phone;
+            if (customerPhone) {
+                paystackPayload.mobile_money = { phone: customerPhone };
             }
         } else if (method === 'card') {
             paystackPayload.channels = ['card'];
@@ -157,8 +161,10 @@ exports.verifyPayment = async (req, res) => {
                 });
             }
 
-            // Send confirmation emails
-            await sendOrderConfirmationEmail(order, data.amount / 100); // Convert from kobo
+            // Send confirmation emails (only if email is provided)
+            if (order.customer.email) {
+                await sendOrderConfirmationEmail(order, data.amount / 100); // Convert from kobo
+            }
             await sendAdminOrderNotification(order, data.amount / 100); // Convert from kobo
 
             return res.json({
@@ -192,6 +198,11 @@ exports.verifyPayment = async (req, res) => {
 // Send order confirmation email
 const sendOrderConfirmationEmail = async (order, paidAmount) => {
     try {
+        if (!order.customer.email) {
+            console.log('No email provided for order confirmation');
+            return;
+        }
+
         const itemsList = order.items.map(item =>
             `<li style="margin-bottom: 10px;">
                 <strong>${item.title}</strong> - Quantity: ${item.quantity} - GH₵${item.price.toFixed(2)} each
@@ -248,6 +259,12 @@ const sendOrderConfirmationEmail = async (order, paidAmount) => {
                     color: #666;
                     font-size: 14px;
                 }
+                .additional-message {
+                    background-color: #e8f4fd;
+                    border-left: 4px solid #2196F3;
+                    padding: 15px;
+                    margin: 20px 0;
+                }
             </style>
         </head>
         <body>
@@ -281,14 +298,21 @@ const sendOrderConfirmationEmail = async (order, paidAmount) => {
                     </div>
                     
                     <div class="order-details">
-                        <h3>📍 Delivery Information:</h3>
+                        <h3>📍 Customer Information:</h3>
                         <p><strong>Name:</strong> ${order.customer.name}</p>
-                        <p><strong>Phone:</strong> ${order.customer.phone}</p>
-                        <p><strong>Email:</strong> ${order.customer.email}</p>
-                        <p><strong>Address:</strong> ${order.customer.address}</p>
+                        ${order.customer.phone ? `<p><strong>Phone:</strong> ${order.customer.phone}</p>` : ''}
+                        ${order.customer.email ? `<p><strong>Email:</strong> ${order.customer.email}</p>` : ''}
+                        ${order.customer.address ? `<p><strong>Address:</strong> ${order.customer.address}</p>` : ''}
                     </div>
                     
-                    <p>🚚 Your order will be delivered to the address provided on <strong>${new Date(order.deliveryDate).toLocaleDateString()}</strong>.</p>
+                    ${order.customer.additionalMessage ? `
+                    <div class="additional-message">
+                        <h3>💬 Additional Message:</h3>
+                        <p>${order.customer.additionalMessage}</p>
+                    </div>
+                    ` : ''}
+                    
+                    <p>🚚 Your order will be delivered ${order.customer.address ? 'to the address provided' : ''} on <strong>${new Date(order.deliveryDate).toLocaleDateString()}</strong>.</p>
                     
                     <p>💝 Your beautiful package is being prepared with care and excellence. Will be delivered right on time.</p>
                     
@@ -385,6 +409,12 @@ const sendAdminOrderNotification = async (order, paidAmount) => {
                     padding: 15px;
                     margin: 20px 0;
                 }
+                .additional-message {
+                    background-color: #e8f4fd;
+                    border-left: 4px solid #2196F3;
+                    padding: 15px;
+                    margin: 20px 0;
+                }
                 .footer {
                     text-align: center;
                     margin-top: 30px;
@@ -427,10 +457,17 @@ const sendAdminOrderNotification = async (order, paidAmount) => {
                     <div class="order-details">
                         <h3>👤 Customer Details:</h3>
                         <p><strong>Name:</strong> ${order.customer.name}</p>
-                        <p><strong>Phone:</strong> ${order.customer.phone}</p>
-                        <p><strong>Email:</strong> ${order.customer.email}</p>
-                        <p><strong>Delivery Address:</strong> ${order.customer.address}</p>
+                        ${order.customer.phone ? `<p><strong>Phone:</strong> ${order.customer.phone}</p>` : '<p><strong>Phone:</strong> Not provided</p>'}
+                        ${order.customer.email ? `<p><strong>Email:</strong> ${order.customer.email}</p>` : '<p><strong>Email:</strong> Not provided</p>'}
+                        ${order.customer.address ? `<p><strong>Delivery Address:</strong> ${order.customer.address}</p>` : '<p><strong>Delivery Address:</strong> Not provided</p>'}
                     </div>
+                    
+                    ${order.customer.additionalMessage ? `
+                    <div class="additional-message">
+                        <h3>💬 Customer's Additional Message:</h3>
+                        <p><em>"${order.customer.additionalMessage}"</em></p>
+                    </div>
+                    ` : ''}
                     
                     <div class="urgent">
                         <h3>🎯 Next Actions Required:</h3>
@@ -438,6 +475,7 @@ const sendAdminOrderNotification = async (order, paidAmount) => {
                             <li><strong>Confirm inventory availability</strong></li>
                             <li><strong>Prepare items for packaging</strong></li>
                             <li><strong>Schedule delivery for ${new Date(order.deliveryDate).toLocaleDateString()}</strong></li>
+                            <li><strong>Contact customer ${order.customer.phone ? `at ${order.customer.phone}` : 'via provided contact info'}</strong></li>
                             <li><strong>Update order status in admin panel</strong></li>
                         </ol>
                     </div>

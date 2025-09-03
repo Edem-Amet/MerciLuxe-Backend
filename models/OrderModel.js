@@ -8,17 +8,22 @@ const OrderSchema = new mongoose.Schema({
         },
         email: {
             type: String,
-            required: [true, 'Customer email is required'],
-            match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+            match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
+            default: ''
         },
         phone: {
             type: String,
-            required: [true, 'Phone number is required'],
-            match: [/^0\d{9}$/, 'Please enter a valid Ghanaian phone number']
+            match: [/^0\d{9}$/, 'Please enter a valid Ghanaian phone number'],
+            default: ''
         },
         address: {
             type: String,
-            required: [true, 'Delivery address is required']
+            default: ''
+        },
+        additionalMessage: {
+            type: String,
+            default: '',
+            maxlength: [500, 'Additional message cannot exceed 500 characters']
         }
     },
     deliveryDate: {

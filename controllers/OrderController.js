@@ -1,18 +1,14 @@
 const Order = require('../models/OrderModel');
 
-
 // Create new order
 exports.createOrder = async (req, res) => {
     try {
         console.log('=== ORDER CREATION REQUEST ===');
         console.log('Request body:', req.body);
 
-        // Validate required fields (removed paymentReference from required fields)
+        // Validate required fields (only name, deliveryDate, items, totalAmount, paymentMethod are required)
         const requiredFields = [
             'customer.name',
-            'customer.email',
-            'customer.phone',
-            'customer.address',
             'deliveryDate',
             'items',
             'totalAmount',
@@ -45,13 +41,32 @@ exports.createOrder = async (req, res) => {
             });
         }
 
+        // Validate email format if provided
+        if (req.body.customer.email && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(req.body.customer.email)) {
+            console.error('Invalid email format:', req.body.customer.email);
+            return res.status(400).json({
+                success: false,
+                message: 'Please enter a valid email address'
+            });
+        }
+
+        // Validate phone format if provided
+        if (req.body.customer.phone && !/^0\d{9}$/.test(req.body.customer.phone)) {
+            console.error('Invalid phone format:', req.body.customer.phone);
+            return res.status(400).json({
+                success: false,
+                message: 'Please enter a valid Ghanaian phone number (e.g., 0241234567)'
+            });
+        }
+
         // Create the order (paymentReference will be added later during payment initiation)
         const order = new Order({
             customer: {
                 name: req.body.customer.name.trim(),
-                email: req.body.customer.email.toLowerCase().trim(),
-                phone: req.body.customer.phone.trim(),
-                address: req.body.customer.address.trim()
+                email: req.body.customer.email ? req.body.customer.email.toLowerCase().trim() : '',
+                phone: req.body.customer.phone ? req.body.customer.phone.trim() : '',
+                address: req.body.customer.address ? req.body.customer.address.trim() : '',
+                additionalMessage: req.body.customer.additionalMessage ? req.body.customer.additionalMessage.trim() : ''
             },
             deliveryDate: new Date(req.body.deliveryDate),
             items: req.body.items.map(item => ({
@@ -66,7 +81,6 @@ exports.createOrder = async (req, res) => {
             paymentStatus: 'pending'
             // paymentReference will be set during payment initiation
         });
-
 
         const savedOrder = await order.save();
         console.log('Order created successfully:', savedOrder._id);
@@ -111,7 +125,7 @@ exports.getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find()
             .sort({ createdAt: -1 })
-            .select('customer.name customer.email paymentStatus totalAmount createdAt deliveryDate items');
+            .select('customer.name customer.email customer.phone customer.additionalMessage paymentStatus totalAmount createdAt deliveryDate items');
 
         res.status(200).json({
             success: true,
