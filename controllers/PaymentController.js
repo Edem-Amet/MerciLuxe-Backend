@@ -426,13 +426,13 @@ const sendAdminOrderNotification = async (order, paidAmount) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🚨 New Order Alert</h1>
-                    <p>Payment Confirmed - Action Required</p>
+                    <h1>New Order !!!</h1>
+                    <p>Payment Confirmed - View Order</p>
                 </div>
                 
                 <div class="content">
                     <div class="urgent">
-                        <strong>⚡ URGENT:</strong> A new order has been placed and paid for. Please process immediately.
+                        <strong>URGENT:</strong> A new order has been placed and paid for. Please kindly process the order.
                     </div>
                     
                     <div class="order-details">
@@ -470,7 +470,7 @@ const sendAdminOrderNotification = async (order, paidAmount) => {
                     ` : ''}
                     
                     <div class="urgent">
-                        <h3>🎯 Next Actions Required:</h3>
+                        <h3>⭐ Next Actions Required:</h3>
                         <ol>
                             <li><strong>Confirm inventory availability</strong></li>
                             <li><strong>Prepare items for packaging</strong></li>
@@ -483,7 +483,7 @@ const sendAdminOrderNotification = async (order, paidAmount) => {
                     <p><strong>Time Sensitive:</strong> Customer expects delivery on ${new Date(order.deliveryDate).toLocaleDateString()}. Please ensure timely processing.</p>
                     
                     <div class="footer">
-                        <p>Merciluxe Admin System<br>
+                        <p>Merciluxe Admin<br>
                         <small>This is an automated notification</small></p>
                     </div>
                 </div>
@@ -494,11 +494,11 @@ const sendAdminOrderNotification = async (order, paidAmount) => {
 
         const adminMailOptions = {
             from: {
-                name: 'Merciluxe System',
+                name: 'Merciluxe',
                 address: process.env.EMAIL_USER
             },
             to: process.env.ADMIN_EMAIL, // Add this environment variable
-            subject: `🚨 NEW ORDER ALERT - Order #${order._id.toString().slice(-8)} - GH₵${paidAmount.toFixed(2)}`,
+            subject: ` NEW ORDER PLACED - Order #${order._id.toString().slice(-8)} - GH₵${paidAmount.toFixed(2)}`,
             html: adminEmailHtml
         };
 
