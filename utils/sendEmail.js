@@ -1,6 +1,6 @@
 // utils/sendEmail.js
 const nodemailer = require('nodemailer');
-const logger = require('./Logger');
+const logger = require('./logger');
 
 // Create email transporter
 const createTransporter = () => {
