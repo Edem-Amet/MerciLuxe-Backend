@@ -35,7 +35,7 @@ const {
     PASSWORD_RESET_LIMITER,
     REGISTRATION_LIMITER,
     AUTH_LIMITER
-} = require('../middleware/AuthMiddleware');
+} = require('../middleware/authMiddleware');
 
 // Apply security headers to all routes
 router.use(securityHeaders);
