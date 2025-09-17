@@ -1,0 +1,130 @@
+[2025-09-17T12:57:47.587Z] [INFO] Email sent successfully to edemamet18@gmail.com: New Login Alert - Admin Account
+[2025-09-17T12:57:47.590Z] [INFO] Successful login: edemamet18@gmail.com
+[2025-09-17T12:57:47.960Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T12:57:48.300Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T12:57:53.702Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/admins
+[2025-09-17T12:58:15.548Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/admins
+[2025-09-17T13:20:54.132Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:20:54.471Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:20:54.809Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:21:03.337Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/admins
+[2025-09-17T13:21:11.612Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:21:11.904Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:21:21.304Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/admins
+[2025-09-17T13:27:11.410Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:27:11.674Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:27:13.271Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:27:16.194Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/admins
+[2025-09-17T13:27:24.158Z] [INFO] Principal admin access: edemamet18@gmail.com - POST /api/admin/logout-all
+[2025-09-17T13:27:24.310Z] [INFO] Principal admin logged out from all devices: edemamet18@gmail.com
+[2025-09-17T13:27:50.608Z] [INFO] Email sent successfully to edemamet18@gmail.com: Password Reset Code - Lifelong Readers
+[2025-09-17T13:28:35.889Z] [INFO] Password reset successful: edemamet18@gmail.com
+[2025-09-17T13:28:49.486Z] [INFO] Email sent successfully to edemamet18@gmail.com: New Login Alert - Admin Account
+[2025-09-17T13:28:49.491Z] [INFO] Successful login: edemamet18@gmail.com
+[2025-09-17T13:28:49.834Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:28:50.106Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:28:53.556Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/admins
+[2025-09-17T13:29:51.798Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:29:52.092Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:29:53.267Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:30:21.008Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:30:21.299Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:30:33.376Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:30:33.673Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:30:42.382Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:30:42.655Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:30:46.097Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:30:46.389Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:30:52.140Z] [INFO] Principal admin access: edemamet18@gmail.com - POST /api/admin/logout-all
+[2025-09-17T13:30:52.311Z] [INFO] Principal admin logged out from all devices: edemamet18@gmail.com
+[2025-09-17T13:31:12.157Z] [INFO] Email sent successfully to edemamet18@gmail.com: New Login Alert - MerciLuxe Admin Account
+[2025-09-17T13:31:12.159Z] [INFO] Successful login: edemamet18@gmail.com
+[2025-09-17T13:31:12.470Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:31:12.804Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:32:49.909Z] [INFO] Email sent successfully to edemamet18@gmail.com: New Admin Registration Pending Approval - MerciLuxe
+[2025-09-17T13:32:49.910Z] [INFO] New admin registration pending approval: deesites18@gmail.om
+[2025-09-17T13:33:13.491Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:33:13.783Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:33:14.112Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:33:16.664Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/admins
+[2025-09-17T13:33:24.347Z] [INFO] Principal admin access: edemamet18@gmail.com - POST /api/admin/approve/68cab87e53d27f01ce048152
+[2025-09-17T13:33:26.755Z] [INFO] Email sent successfully to deesites18@gmail.om: Admin Registration Approved - Welcome to MerciLuxe!
+[2025-09-17T13:33:26.756Z] [INFO] Admin approved: deesites18@gmail.om by edemamet18@gmail.com
+[2025-09-17T13:33:26.918Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:33:26.946Z] [INFO] Principal admin access: edemamet18@gmail.com - POST /api/admin/approve/68cab87e53d27f01ce048152
+[2025-09-17T13:33:36.874Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:33:37.167Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:33:37.740Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:33:47.613Z] [INFO] Email sent successfully to deesites18@gmail.om: New Login Alert - MerciLuxe Admin Account
+[2025-09-17T13:33:47.615Z] [INFO] Successful login: deesites18@gmail.om
+[2025-09-17T13:34:07.041Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/admins
+[2025-09-17T13:34:16.034Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:34:16.323Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:34:16.796Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:34:34.310Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:34:34.748Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:36:26.084Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:36:34.038Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:36:34.533Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:46:07.841Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:46:09.463Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:46:12.820Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T13:46:21.310Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/admins
+[2025-09-17T13:46:25.060Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/admins
+[2025-09-17T14:05:48.802Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:05:56.678Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:05:58.746Z] [INFO] Principal admin access: edemamet18@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:19:18.685Z] [ERROR] Email attempt 1/3 failed: Unexpected socket close
+[2025-09-17T14:19:35.063Z] [ERROR] Email attempt 2/3 failed: Client network socket disconnected before secure TLS connection was established
+[2025-09-17T14:19:58.361Z] [ERROR] Email attempt 3/3 failed: Unexpected socket close
+[2025-09-17T14:19:58.365Z] [ERROR] All email attempts failed for merciluxe99@gmail.com
+[2025-09-17T14:19:58.380Z] [ERROR] Failed to send login notification to merciluxe99@gmail.com: Unexpected socket close
+[2025-09-17T14:19:58.389Z] [INFO] Successful login: merciluxe99@gmail.com
+[2025-09-17T14:20:00.820Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:20:09.008Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:20:42.740Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-09-17T14:28:54.405Z] [ERROR] Email attempt 1/3 failed: read ECONNRESET
+[2025-09-17T14:29:20.699Z] [ERROR] Email attempt 2/3 failed: getaddrinfo ENOTFOUND smtp.gmail.com
+[2025-09-17T14:29:24.708Z] [ERROR] Email attempt 3/3 failed: getaddrinfo ENOTFOUND smtp.gmail.com
+[2025-09-17T14:29:24.711Z] [ERROR] All email attempts failed for merciluxe99@gmail.com
+[2025-09-17T14:29:24.719Z] [ERROR] Failed to send registration alert to merciluxe99@gmail.com: getaddrinfo ENOTFOUND smtp.gmail.com
+[2025-09-17T14:29:24.725Z] [INFO] New admin registration pending approval: edemamet18@gmail.com
+[2025-09-17T14:34:22.676Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:34:23.251Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:34:24.961Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:37:34.170Z] [INFO] Principal admin access: merciluxe99@gmail.com - POST /api/admin/approve/68cac4b8448de5571b91af62
+[2025-09-17T14:37:36.842Z] [INFO] Email sent successfully to edemamet18@gmail.com: Admin Registration Approved - Welcome to MerciLuxe!
+[2025-09-17T14:37:36.843Z] [INFO] Admin approved: edemamet18@gmail.com by merciluxe99@gmail.com
+[2025-09-17T14:37:37.008Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:37:37.017Z] [INFO] Principal admin access: merciluxe99@gmail.com - POST /api/admin/approve/68cac4b8448de5571b91af62
+[2025-09-17T14:37:47.167Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:37:47.433Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:37:47.768Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:37:49.381Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-09-17T14:38:15.319Z] [INFO] Email sent successfully to edemamet18@gmail.com: New Login Alert - MerciLuxe Admin Account
+[2025-09-17T14:38:15.326Z] [INFO] Successful login: edemamet18@gmail.com
+[2025-09-17T14:50:46.085Z] [INFO] Email sent successfully to merciluxe99@gmail.com: New Admin Registration Pending Approval
+[2025-09-17T14:50:46.108Z] [INFO] New admin registration pending approval: ametepehemmanuel30@gmail.com
+[2025-09-17T14:52:28.406Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-09-17T14:52:37.787Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:52:38.082Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:52:53.454Z] [INFO] Principal admin access: merciluxe99@gmail.com - POST /api/admin/approve/68cacac2bf7e643ec98e9784
+[2025-09-17T14:52:55.658Z] [INFO] Email sent successfully to ametepehemmanuel30@gmail.com: Admin Registration Approved - Welcome!
+[2025-09-17T14:52:55.660Z] [INFO] Admin approved: ametepehemmanuel30@gmail.com by merciluxe99@gmail.com
+[2025-09-17T14:52:55.786Z] [INFO] Principal admin access: merciluxe99@gmail.com - POST /api/admin/approve/68cacac2bf7e643ec98e9784
+[2025-09-17T14:52:55.827Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:53:01.742Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:53:02.387Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:53:02.663Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:53:06.473Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-09-17T14:53:48.626Z] [INFO] Email sent successfully to ametepehemmanuel30@gmail.com: New Login Alert - Admin Account
+[2025-09-17T14:53:48.692Z] [INFO] Successful login: ametepehemmanuel30@gmail.com
+[2025-09-17T14:59:25.839Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:59:26.107Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T14:59:31.422Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-09-17T15:00:12.899Z] [INFO] Email sent successfully to ametepehemmanuel30@gmail.com: New Login Alert - Admin Account
+[2025-09-17T15:00:12.906Z] [INFO] Successful login: ametepehemmanuel30@gmail.com
+[2025-09-17T15:01:29.540Z] [INFO] Email sent successfully to merciluxe99@gmail.com: New Login Alert - Admin Account
+[2025-09-17T15:01:29.542Z] [INFO] Successful login: merciluxe99@gmail.com
+[2025-09-17T15:01:29.997Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T15:01:30.262Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations

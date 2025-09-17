@@ -1,148 +1,171 @@
 const jwt = require('jsonwebtoken');
-const asyncHandler = require('express-async-handler');
 const AdminUser = require('../models/AdminModel');
 const rateLimit = require('express-rate-limit');
-const logger = require('../utils/logger');
+const logger = require('../utils/Logger');
 
-// Constants
-const TOKEN_PREFIX = 'Bearer ';
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Rate limiters
+// ====== Rate Limiters ======
 const AUTH_LIMITER = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Max 100 attempts
-    message: 'Too many authentication attempts. Please try again later.',
-    keyGenerator: (req) => req.ip,
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: { success: false, message: 'Too many requests. Please try again later.' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+const LOGIN_LIMITER = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { success: false, message: 'Too many login attempts. Please try again later.' },
+    skipSuccessfulRequests: true,
 });
 
 const PASSWORD_RESET_LIMITER = rateLimit({
-    windowMs: 60 * 60 * 1000, // 1 hour
-    max: 5, // Max 5 reset attempts per hour
-    message: 'Too many password reset attempts. Please try again later.',
-    keyGenerator: (req) => req.ip,
+    windowMs: 60 * 60 * 1000,
+    max: 5,
+    message: { success: false, message: 'Too many password reset attempts. Please try again later.' },
 });
 
-/**
- * Extract JWT token from Authorization header or cookie
- */
+const REGISTRATION_LIMITER = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 5,
+    message: { success: false, message: 'Too many registration attempts. Please try again later.' },
+});
+
+// ====== Helpers ======
 const extractToken = (req) => {
+    if (req.cookies?.adminToken) return req.cookies.adminToken;
+
     const authHeader = req.headers.authorization;
-    if (authHeader && authHeader.toLowerCase().startsWith(TOKEN_PREFIX.toLowerCase())) {
+    if (authHeader?.toLowerCase().startsWith('bearer ')) {
         return authHeader.split(' ')[1];
-    }
-    if (req.cookies?.token) {
-        return req.cookies.token;
     }
     return null;
 };
 
-/**
- * Verify JWT token and return decoded payload
- */
 const verifyToken = (token) => {
-    if (!token || typeof token !== 'string') {
-        throw new Error('Invalid token format');
-    }
-    return jwt.verify(token, JWT_SECRET);
-};
-
-/**
- * Authenticate the user using token and check roles
- */
-const authenticateUser = async (token, requireAdmin = false) => {
+    if (!token) throw new Error('Authorization token required');
     try {
-        const decoded = verifyToken(token);
-
-        if (!decoded?._id) {
-            throw new Error('Invalid token payload');
-        }
-
-        const user = await AdminUser.findById(decoded._id).select('-password');
-
-        if (!user) {
-            throw new Error('User not found');
-        }
-
-        if (!user.isVerified) {
-            throw new Error('Please verify your email first');
-        }
-
-        if (requireAdmin && !user.isAdmin) {
-            throw new Error('Admin privileges required');
-        }
-
-        return user;
-    } catch (error) {
-        logger.error(`Authentication failed: ${error.message}`);
-        throw error;
+        return jwt.verify(token, JWT_SECRET);
+    } catch (err) {
+        if (err.name === 'TokenExpiredError') throw new Error('Token expired');
+        if (err.name === 'JsonWebTokenError') throw new Error('Invalid token');
+        throw new Error('Token verification failed');
     }
 };
 
-/**
- * Format and send error response
- */
-const authResponse = (res, error) => {
-    const statusMap = {
-        TokenExpiredError: 401,
-        JsonWebTokenError: 401,
-        NotBeforeError: 401,
-        'Authorization token required': 401,
-        'Invalid token format': 401,
-        'Invalid token payload': 401,
-        'User not found': 401,
-        'Please verify your email first': 403,
-        'Admin privileges required': 403,
-        'Invalid or expired reset code': 400,
-        'Password reset not requested': 400
+const authenticateUser = async (decoded) => {
+    // Check for both id and _id to handle different token formats
+    const userId = decoded.id || decoded._id;
+
+    if (!userId) {
+        throw new Error('Invalid token payload');
+    }
+
+    const user = await AdminUser.findById(userId);
+    if (!user) throw new Error('User not found');
+
+    if (user.status !== 'approved') throw new Error('Account not approved');
+    if (user.isLocked) throw new Error('Account temporarily locked');
+
+    // Verify session is still active
+    if (decoded.sessionId) {
+        const activeSession = user.activeSessions.find(
+            session => session.sessionId === decoded.sessionId && session.isActive
+        );
+        if (!activeSession) {
+            throw new Error('Session expired or invalid');
+        }
+    }
+
+    return { user, sessionId: decoded.sessionId };
+};
+
+const sendAuthError = (res, error) => {
+    const errorMap = {
+        'Authorization token required': { status: 401, code: 'NO_TOKEN' },
+        'Token expired': { status: 401, code: 'TOKEN_EXPIRED' },
+        'Invalid token': { status: 401, code: 'INVALID_TOKEN' },
+        'Token verification failed': { status: 401, code: 'TOKEN_VERIFICATION_FAILED' },
+        'Invalid token payload': { status: 401, code: 'INVALID_PAYLOAD' },
+        'User not found': { status: 401, code: 'USER_NOT_FOUND' },
+        'Account not approved': { status: 403, code: 'ACCOUNT_NOT_APPROVED' },
+        'Account temporarily locked': { status: 423, code: 'ACCOUNT_LOCKED' },
+        'Session expired or invalid': { status: 401, code: 'SESSION_EXPIRED' },
     };
 
-    const statusCode = statusMap[error.message] || 401;
+    const { status, code } = errorMap[error.message] || { status: 401, code: 'AUTH_ERROR' };
 
-    return res.status(statusCode).json({
+    return res.status(status).json({
         success: false,
         message: error.message,
-        error: error.name || 'AuthenticationError',
-        timestamp: new Date().toISOString(),
+        code,
     });
 };
 
-/**
- * Middleware: Protect routes for authenticated users only
- */
-const protect = asyncHandler(async (req, res, next) => {
+// ====== Middlewares ======
+const protect = async (req, res, next) => {
     try {
         const token = extractToken(req);
         if (!token) throw new Error('Authorization token required');
 
-        req.user = await authenticateUser(token);
+        const decoded = verifyToken(token);
+        const { user, sessionId } = await authenticateUser(decoded);
+
+        req.user = user;
+        req.sessionId = sessionId;
         next();
-    } catch (error) {
-        authResponse(res, error);
+    } catch (err) {
+        sendAuthError(res, err);
     }
-});
+};
 
-/**
- * Middleware: Admin-only access
- */
-const admin = [
-    AUTH_LIMITER,
-    asyncHandler(async (req, res, next) => {
-        try {
-            const token = extractToken(req);
-            if (!token) throw new Error('Authorization token required');
+const principalOnly = async (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({ success: false, message: 'Authentication required', code: 'AUTH_REQUIRED' });
+    }
 
-            req.user = await authenticateUser(token, true);
-            next();
-        } catch (error) {
-            authResponse(res, error);
-        }
-    }),
-];
+    if (!req.user.isPrincipal()) {
+        return res.status(403).json({ success: false, message: 'Principal admin privileges required', code: 'INSUFFICIENT_PRIVILEGES' });
+    }
+
+    logger.info(`Principal admin access: ${req.user.email} - ${req.method} ${req.originalUrl}`);
+    next();
+};
+
+const adminOrPrincipal = async (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({ success: false, message: 'Authentication required', code: 'AUTH_REQUIRED' });
+    }
+
+    if (!req.user.canAccessAdmin()) {
+        return res.status(403).json({ success: false, message: 'Admin privileges required', code: 'INSUFFICIENT_PRIVILEGES' });
+    }
+
+    next();
+};
+
+const securityHeaders = (req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+
+    if (process.env.NODE_ENV === 'production') {
+        res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    }
+
+    next();
+};
 
 module.exports = {
     protect,
-    admin,
+    principalOnly,
+    adminOrPrincipal,
+    securityHeaders,
+    AUTH_LIMITER,
+    LOGIN_LIMITER,
     PASSWORD_RESET_LIMITER,
-    AUTH_LIMITER
+    REGISTRATION_LIMITER,
 };
