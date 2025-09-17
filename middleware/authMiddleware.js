@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const AdminUser = require('../models/AdminModel');
 const rateLimit = require('express-rate-limit');
-const logger = require('../utils/Logger');
+const logger = require('../utils/logger);
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
