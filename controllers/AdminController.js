@@ -8,7 +8,7 @@ const {
     sendRejectionNotification,
     sendPasswordResetEmail,
     sendLoginNotification
-} = require('../utils/SendEmail');
+} = require('../utils/sendEmail');
 const { parseUserAgent, getLocationFromIP } = require('../utils/DeviceUtils');
 const logger = require('../utils/Logger');
 
