@@ -128,3 +128,6 @@
 [2025-09-17T15:01:29.542Z] [INFO] Successful login: merciluxe99@gmail.com
 [2025-09-17T15:01:29.997Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
 [2025-09-17T15:01:30.262Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T15:53:06.519Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T15:53:06.848Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-09-17T15:53:07.114Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
