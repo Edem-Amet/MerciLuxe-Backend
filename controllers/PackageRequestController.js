@@ -115,7 +115,7 @@ exports.submitPackageRequest = async (req, res) => {
         // Send confirmation email to customer if email was provided
         if (email) {
             const customerMailOptions = {
-                from: 'MerciLuxe',
+                from: process.env.EMAIL_USER,
                 to: email,
                 subject: 'Request Received - Merciluxe',
                 html: `
