@@ -114,6 +114,7 @@ const souvenirRoutes = require('./routes/SouvenirRoutes');
 const BeadRoutes = require('./routes/BeadRoutes');
 const SpecialRoutes = require('./routes/SpecialRoutes')
 const AdminRoutes = require('./routes/AdminRoutes');
+const packageRequestRoutes = require('./routes/PackageRequestRoutes');
 
 // === Enhanced Test Route ===
 app.get('/test-images', (req, res) => {
@@ -151,6 +152,7 @@ app.use('/api/cooperate', cooperateRoutes);
 app.use('/api/souvenirs', souvenirRoutes);
 app.use('/api/beads', BeadRoutes);
 app.use('/api/special', SpecialRoutes)
+app.use('/api/packagerequest', packageRequestRoutes);
 app.use('/api/admin', AdminRoutes);
 
 
