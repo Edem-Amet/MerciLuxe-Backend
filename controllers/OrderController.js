@@ -120,16 +120,28 @@ exports.createOrder = async (req, res) => {
     }
 };
 
+
 // Get all orders
 exports.getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find()
             .sort({ createdAt: -1 })
-            .select('customer.name customer.email customer.phone customer.additionalMessage paymentStatus totalAmount createdAt deliveryDate items');
+            .select('customer items paymentStatus paymentMethod totalAmount createdAt deliveryDate paymentReference');
+
+        // Calculate statistics
+        const stats = {
+            total: orders.length,
+            paid: orders.filter(order => order.paymentStatus === 'paid').length,
+            pending: orders.filter(order => order.paymentStatus === 'pending').length,
+            totalRevenue: orders
+                .filter(order => order.paymentStatus === 'paid')
+                .reduce((sum, order) => sum + order.totalAmount, 0)
+        };
 
         res.status(200).json({
             success: true,
             data: orders,
+            stats: stats,
             count: orders.length
         });
     } catch (error) {

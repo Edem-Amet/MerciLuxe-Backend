@@ -3,18 +3,17 @@ const { initiatePayment, verifyPayment } = require('../controllers/PaymentContro
 const { createOrder, getOrderById, getAllOrders, deleteOrder } = require('../controllers/OrderController');
 const router = express.Router();
 
-// IMPORTANT: Specific routes MUST come BEFORE parameterized routes
-// Get all orders - must come BEFORE /:id
-router.get('/all', getAllOrders);
-
 // Payment routes
 router.post('/payment/initiate', initiatePayment);
 router.get('/payment/verify/:reference', verifyPayment);
 
+// Get all orders - use a more explicit path
+router.get('/list/all', getAllOrders);
+
 // Create new order
 router.post('/', createOrder);
 
-// Get single order by ID - comes AFTER /all
+// Get single order by ID
 router.get('/:id', getOrderById);
 
 // Delete order
