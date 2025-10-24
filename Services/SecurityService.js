@@ -1,8 +1,8 @@
 // services/SecurityService.js
 const AdminUser = require('../models/AdminModel');
-const { sendSecurityAlert } = require('../utils/SendEmail');
+const { sendSecurityAlert } = require('../utils/sendEmail');
 const { detectSuspiciousActivity, isHighRiskIP, getLocationFromIP } = require('../utils/DeviceUtils');
-const logger = require('../utils/Logger');
+const logger = require('../utils/logger');
 
 class SecurityService {
     /**

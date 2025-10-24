@@ -485,3 +485,5 @@
 [2025-10-24T04:30:01.460Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
 [2025-10-24T04:30:01.639Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
 [2025-10-24T04:30:03.267Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T04:36:19.256Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/profile
+[2025-10-24T04:36:20.052Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/profile
