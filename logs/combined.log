@@ -537,3 +537,25 @@
 [2025-10-24T05:56:07.952Z] [INFO] Email sent to ametepehemmanuel30@gmail.com: 🔐 New Login Alert - Merciluxe
 [2025-10-24T05:56:16.072Z] [DEBUG] Authenticated: ametepehemmanuel30@gmail.com - GET /api/admin/dashboard/stats
 [2025-10-24T05:56:16.458Z] [DEBUG] Authenticated: ametepehemmanuel30@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T06:20:29.437Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.1
+[2025-10-24T06:20:29.989Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T06:20:30.096Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T06:20:30.104Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T06:20:32.426Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T06:20:51.329Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T06:20:51.344Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T06:20:51.361Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T06:20:51.365Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T06:20:51.375Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T06:20:51.378Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T06:51:49.716Z] [INFO] Logout: ametepehemmanuel30@gmail.com
+[2025-10-24T06:51:49.781Z] [INFO] Logout: ametepehemmanuel30@gmail.com
+[2025-10-24T06:51:49.882Z] [INFO] Logout: ametepehemmanuel30@gmail.com
+[2025-10-24T06:52:18.455Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.4
+[2025-10-24T06:52:19.137Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T06:52:19.794Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T06:52:21.800Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T06:52:23.229Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T06:52:27.377Z] [INFO] Principal admin access: merciluxe99@gmail.com - PATCH /api/admin/admins/68fb14885b7795f427cbce3f/toggle-status
+[2025-10-24T06:52:27.723Z] [INFO] Admin status toggled: ametepehemmanuel30@gmail.com -> suspended by merciluxe99@gmail.com
+[2025-10-24T06:52:28.146Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
