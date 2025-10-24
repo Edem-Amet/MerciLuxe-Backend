@@ -559,3 +559,12 @@
 [2025-10-24T06:52:27.377Z] [INFO] Principal admin access: merciluxe99@gmail.com - PATCH /api/admin/admins/68fb14885b7795f427cbce3f/toggle-status
 [2025-10-24T06:52:27.723Z] [INFO] Admin status toggled: ametepehemmanuel30@gmail.com -> suspended by merciluxe99@gmail.com
 [2025-10-24T06:52:28.146Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T07:05:56.033Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T07:05:56.600Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T07:05:57.173Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T07:06:06.354Z] [INFO] Logout all devices: merciluxe99@gmail.com
+[2025-10-24T07:06:17.293Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.4
+[2025-10-24T07:06:17.992Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T07:06:18.565Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T07:06:19.976Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T07:06:33.049Z] [INFO] Logout all devices: merciluxe99@gmail.com

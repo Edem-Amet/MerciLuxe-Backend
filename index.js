@@ -33,23 +33,9 @@ if (process.env.ALLOWED_ORIGINS) {
 
 console.log('✅ Allowed Origins:', allowedOrigins);
 
-// CORS middleware function
+// CORS middleware function - ALLOW ALL for debugging
 const corsOptions = {
-    origin: function (origin, callback) {
-        // Allow requests with no origin (mobile apps, Postman, etc.)
-        if (!origin) {
-            return callback(null, true);
-        }
-
-        // Check if origin is allowed
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            console.log(`⚠️ CORS blocked origin: ${origin}`);
-            // In production, allow all origins temporarily to debug
-            callback(null, true); // Change to callback(new Error('Not allowed by CORS')) after testing
-        }
-    },
+    origin: true, // Allow all origins temporarily
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
     allowedHeaders: [
@@ -69,21 +55,24 @@ const corsOptions = {
 // Apply CORS globally
 app.use(cors(corsOptions));
 
-// Explicitly handle preflight for all routes
+// Explicitly set CORS headers on every request
 app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    if (origin && allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-    } else if (!origin) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-    }
+    const origin = req.headers.origin || req.headers.referer || '*';
+
+    res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, X-Api-Key');
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Type');
+    res.setHeader('Access-Control-Max-Age', '86400');
+
+    // Log CORS info
+    console.log(`📨 ${req.method} ${req.path} - Origin: ${req.headers.origin || 'none'}`);
 
     // Handle preflight
     if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
+        console.log('✅ Preflight request handled');
+        return res.status(200).end();
     }
     next();
 });
