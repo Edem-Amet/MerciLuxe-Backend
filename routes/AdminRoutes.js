@@ -1,7 +1,6 @@
-// routes/adminRoutes.js
+// routes/AdminRoutes.js
 const express = require('express');
 const router = express.Router();
-
 const {
     registerAdmin,
     loginAdmin,
@@ -10,109 +9,75 @@ const {
     getProfile,
     getDashboardStats,
     getActiveSessions,
+    terminateSession,
     updateNotificationPreferences,
     changePassword,
+    requestPasswordReset,
     verifyResetCode,
-
-    // Principal Admin functions
+    resetPassword,
     getPendingRegistrations,
     approveAdmin,
     rejectAdmin,
     getAllAdmins,
     toggleAdminStatus,
-
-    // Password reset
-    requestPasswordReset,
-    resetPassword
+    deleteAdmin,
+    getAdminDetails,
+    getSecurityReport
 } = require('../controllers/AdminController');
 
 const {
     protect,
     principalOnly,
     adminOrPrincipal,
-    securityHeaders,
     LOGIN_LIMITER,
     PASSWORD_RESET_LIMITER,
-    REGISTRATION_LIMITER,
-    AUTH_LIMITER
+    REGISTRATION_LIMITER
 } = require('../middleware/authMiddleware');
 
-// Apply security headers to all routes
-router.use(securityHeaders);
-
-// ===== PUBLIC ROUTES (No authentication required) =====
+// ===== PUBLIC ROUTES =====
+// Registration
 router.post('/register', REGISTRATION_LIMITER, registerAdmin);
+
+// Login
 router.post('/login', LOGIN_LIMITER, loginAdmin);
-router.post('/request-password-reset', PASSWORD_RESET_LIMITER, requestPasswordReset);
-router.post('/verify-reset-code', verifyResetCode);
-router.post('/reset-password', PASSWORD_RESET_LIMITER, resetPassword);
 
-// ===== PROTECTED ROUTES (Require authentication) =====
+// Password Reset
+router.post('/password/reset-request', PASSWORD_RESET_LIMITER, requestPasswordReset);
+router.post('/password/verify-code', PASSWORD_RESET_LIMITER, verifyResetCode);
+router.post('/password/reset', PASSWORD_RESET_LIMITER, resetPassword);
 
-// Profile and auth routes
-router.get('/profile', AUTH_LIMITER, protect, getProfile);
+// ===== PROTECTED ROUTES (All Authenticated Admins) =====
+// Logout
 router.post('/logout', protect, logoutAdmin);
+router.post('/logout-all', protect, logoutAllDevices);
 
-// Dashboard and stats - any authenticated admin
-router.get('/dashboard-stats', protect, adminOrPrincipal, getDashboardStats);
+// Profile
+router.get('/profile', protect, getProfile);
 
-// Security settings - any authenticated admin
-router.get('/active-sessions', protect, getActiveSessions);
-router.post('/update-notifications', protect, updateNotificationPreferences);
-router.post('/change-password', protect, changePassword);
+// Dashboard
+router.get('/dashboard/stats', protect, adminOrPrincipal, getDashboardStats);
+
+// Sessions Management
+router.get('/sessions', protect, getActiveSessions);
+router.delete('/sessions/:sessionId', protect, terminateSession);
+
+// Settings
+router.patch('/notifications', protect, updateNotificationPreferences);
+router.post('/password/change', protect, changePassword);
+
+// Security
+router.get('/security/report', protect, getSecurityReport);
 
 // ===== PRINCIPAL ADMIN ONLY ROUTES =====
-
-// Logout all devices - principal only
-router.post('/logout-all', protect, principalOnly, logoutAllDevices);
-
-// Admin management - principal only
-router.get('/pending-registrations', protect, principalOnly, getPendingRegistrations);
-router.post('/approve/:adminId', protect, principalOnly, approveAdmin);
-router.post('/reject/:adminId', protect, principalOnly, rejectAdmin);
-router.patch('/toggle-status/:adminId', protect, principalOnly, toggleAdminStatus);
+// Admin Management
+router.get('/admins/pending', protect, principalOnly, getPendingRegistrations);
 router.get('/admins', protect, principalOnly, getAllAdmins);
+router.get('/admins/:adminId', protect, principalOnly, getAdminDetails);
 
-// ===== TEST/DEBUG ROUTES =====
-
-// Health check
-router.get('/health', (req, res) => {
-    res.json({
-        success: true,
-        message: 'Admin routes are working',
-        timestamp: new Date().toISOString()
-    });
-});
-
-// Test authentication
-router.get('/test-auth', protect, (req, res) => {
-    res.json({
-        success: true,
-        message: 'Authentication working',
-        user: {
-            _id: req.user._id,
-            name: req.user.name,
-            email: req.user.email,
-            role: req.user.role,
-            status: req.user.status,
-            isPrincipal: req.user.isPrincipal()
-        }
-    });
-});
-
-// Test principal access
-router.get('/test-principal', protect, principalOnly, (req, res) => {
-    res.json({
-        success: true,
-        message: 'Principal access working',
-        user: {
-            _id: req.user._id,
-            name: req.user.name,
-            email: req.user.email,
-            role: req.user.role,
-            isPrincipal: true
-        }
-    });
-});
+// Approval Actions
+router.patch('/admins/:adminId/approve', protect, principalOnly, approveAdmin);
+router.patch('/admins/:adminId/reject', protect, principalOnly, rejectAdmin);
+router.patch('/admins/:adminId/toggle-status', protect, principalOnly, toggleAdminStatus);
+router.delete('/admins/:adminId', protect, principalOnly, deleteAdmin);
 
 module.exports = router;

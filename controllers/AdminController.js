@@ -7,34 +7,51 @@ const {
     sendApprovalNotification,
     sendRejectionNotification,
     sendPasswordResetEmail,
-    sendLoginNotification
+    sendLoginNotification,
+    sendSecurityAlert
 } = require('../utils/sendEmail');
-const { parseUserAgent, getLocationFromIP } = require('../utils/DeviceUtils');
+const { parseUserAgent, getLocationFromIP, detectSuspiciousActivity } = require('../utils/DeviceUtils');
 const logger = require('../utils/logger');
+const SecurityService = require('../Services/SecurityService');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
 
-// Helper functions
-const generateToken = (payload) => jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+// ===== HELPER FUNCTIONS =====
+const generateToken = (payload) => {
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+};
 
 const extractDeviceInfo = (req) => {
     const userAgent = req.headers['user-agent'] || '';
-    const ip = req.ip || req.connection.remoteAddress || '';
+    const ip = req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for'] || '';
 
     return {
         userAgent,
         ip,
-        location: getLocationFromIP ? getLocationFromIP(ip) : 'Unknown',
-        ...(parseUserAgent ? parseUserAgent(userAgent) : {})
+        location: getLocationFromIP(ip),
+        ...parseUserAgent(userAgent)
     };
 };
 
-// REGISTRATION - Anyone can request admin access
+const validatePasswordStrength = (password) => {
+    const errors = [];
+
+    if (password.length < 8) errors.push('Password must be at least 8 characters');
+    if (!/[A-Z]/.test(password)) errors.push('Password must contain uppercase letter');
+    if (!/[a-z]/.test(password)) errors.push('Password must contain lowercase letter');
+    if (!/[0-9]/.test(password)) errors.push('Password must contain number');
+    if (!/[!@#$%^&*]/.test(password)) errors.push('Password must contain special character');
+
+    return { isValid: errors.length === 0, errors };
+};
+
+// ===== REGISTRATION =====
 const registerAdmin = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
+        // Validation
         if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
@@ -42,16 +59,30 @@ const registerAdmin = async (req, res) => {
             });
         }
 
-        // Check if user already exists
-        const existingAdmin = await AdminUser.findOne({ email: email.toLowerCase().trim() });
-        if (existingAdmin) {
+        // Validate password strength
+        const passwordCheck = validatePasswordStrength(password);
+        if (!passwordCheck.isValid) {
             return res.status(400).json({
                 success: false,
-                message: 'Email already in use'
+                message: 'Password does not meet requirements',
+                errors: passwordCheck.errors
             });
         }
 
-        // Create admin user with pending status
+        // Check if email already exists
+        const existingAdmin = await AdminUser.findOne({
+            email: email.toLowerCase().trim(),
+            isDeleted: false
+        });
+
+        if (existingAdmin) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email already registered'
+            });
+        }
+
+        // Create admin with pending status
         const adminUser = new AdminUser({
             name: name.trim(),
             email: email.toLowerCase().trim(),
@@ -62,31 +93,35 @@ const registerAdmin = async (req, res) => {
 
         await adminUser.save();
 
-        // Notify all principal admins about new registration
+        // Notify principal admins
         try {
             const principalAdmins = await AdminUser.find({
                 role: 'principal',
                 status: 'approved',
+                isDeleted: false,
                 'emailNotifications.newRegistration': true
             });
 
-            for (const principal of principalAdmins) {
-                await sendNewRegistrationAlert({
+            const notifications = principalAdmins.map(principal =>
+                sendNewRegistrationAlert({
                     email: principal.email,
                     principalName: principal.name,
                     newAdminName: adminUser.name,
-                    newAdminEmail: adminUser.email
-                });
-            }
+                    newAdminEmail: adminUser.email,
+                    registrationDate: adminUser.createdAt
+                })
+            );
+
+            await Promise.allSettled(notifications);
         } catch (emailError) {
-            logger.error(`Failed to send registration alerts: ${emailError.message}`);
+            logger.error(`Registration alert failed: ${emailError.message}`);
         }
 
-        logger.info(`New admin registration pending approval: ${adminUser.email}`);
+        logger.info(`New admin registration: ${adminUser.email}`);
 
         return res.status(201).json({
             success: true,
-            message: 'Registration submitted successfully. Awaiting principal admin approval.',
+            message: 'Registration submitted. Awaiting principal admin approval.',
             data: {
                 _id: adminUser._id,
                 name: adminUser.name,
@@ -95,15 +130,15 @@ const registerAdmin = async (req, res) => {
             }
         });
     } catch (error) {
-        logger.error(`Registration Error: ${error.message}`);
+        logger.error(`Registration error: ${error.message}`, error);
         return res.status(500).json({
             success: false,
-            message: 'Server error during registration'
+            message: 'Registration failed. Please try again.'
         });
     }
 };
 
-// LOGIN - Only approved users can login
+// ===== LOGIN =====
 const loginAdmin = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -117,48 +152,63 @@ const loginAdmin = async (req, res) => {
 
         const deviceInfo = extractDeviceInfo(req);
 
-        const admin = await AdminUser.findOne({ email: email.toLowerCase().trim() });
+        // Find admin with password field
+        const admin = await AdminUser.findOne({
+            email: email.toLowerCase().trim(),
+            isDeleted: false
+        }).select('+password');
+
         if (!admin) {
             return res.status(401).json({
                 success: false,
-                message: 'Invalid credentials'
+                message: 'Invalid email or password'
             });
         }
 
-        // Account lock check
+        // Check if account is locked
         if (admin.isLocked) {
+            const unlockTime = Math.ceil((admin.lockoutUntil - Date.now()) / 60000);
             return res.status(423).json({
                 success: false,
-                message: 'Account temporarily locked due to failed login attempts'
+                message: `Account locked. Try again in ${unlockTime} minutes.`,
+                code: 'ACCOUNT_LOCKED'
             });
         }
 
         // Verify password
         const passwordMatch = await admin.matchPassword(password);
         if (!passwordMatch) {
-            await admin.handleFailedLogin();
+            await admin.handleFailedLogin(deviceInfo);
             return res.status(401).json({
                 success: false,
-                message: 'Invalid credentials'
+                message: 'Invalid email or password'
             });
         }
 
-        // Must be approved
+        // Check approval status
         if (admin.status !== 'approved') {
             return res.status(403).json({
                 success: false,
-                message: `Account status: ${admin.status}. Please wait for principal admin approval.`,
+                message: `Account ${admin.status}. Contact principal admin.`,
                 code: 'ACCOUNT_NOT_APPROVED'
             });
         }
 
-        // Reset failed attempts & clean old sessions
+        // Security checks
+        const threats = await SecurityService.analyzeLoginAttempt(admin, deviceInfo);
+        if (threats.length > 0) {
+            logger.warn(`Security threats detected for ${admin.email}:`, threats);
+        }
+
+        // Reset failed attempts and clean old sessions
         admin.resetFailedLogins();
         admin.cleanExpiredSessions();
 
         // Create new session
         const sessionId = admin.addSession(deviceInfo);
+        admin.logSuccessfulLogin(deviceInfo);
 
+        // Generate token
         const token = generateToken({
             _id: admin._id,
             sessionId,
@@ -171,29 +221,25 @@ const loginAdmin = async (req, res) => {
         await admin.save();
 
         // Send login notification
-        try {
-            if (admin.emailNotifications?.newLogin) {
-                await sendLoginNotification({
-                    email: admin.email,
-                    name: admin.name,
-                    deviceInfo,
-                    loginTime: new Date()
-                });
-            }
-        } catch (emailError) {
-            logger.error(`Login notification failed: ${emailError.message}`);
+        if (admin.emailNotifications?.newLogin) {
+            sendLoginNotification({
+                email: admin.email,
+                name: admin.name,
+                deviceInfo,
+                loginTime: new Date()
+            }).catch(err => logger.error(`Login notification failed: ${err.message}`));
         }
 
-        // Set cookie
+        // Set secure cookie
         res.cookie('adminToken', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-            maxAge: 24 * 60 * 60 * 1000, // 24h
+            maxAge: 24 * 60 * 60 * 1000,
             path: '/'
         });
 
-        logger.info(`Successful login: ${admin.email}`);
+        logger.info(`Successful login: ${admin.email} from ${deviceInfo.ip}`);
 
         return res.status(200).json({
             success: true,
@@ -205,22 +251,22 @@ const loginAdmin = async (req, res) => {
                 email: admin.email,
                 role: admin.role,
                 status: admin.status,
-                sessionId,
                 isPrincipal: admin.isPrincipal(),
                 activeSessions: admin.activeSessions.filter(s => s.isActive).length,
-                lastLogin: admin.lastLogin
+                lastLogin: admin.lastLogin,
+                securityAlerts: threats.length > 0 ? threats : undefined
             }
         });
     } catch (error) {
-        logger.error(`Login Error: ${error.message}`);
+        logger.error(`Login error: ${error.message}`, error);
         return res.status(500).json({
             success: false,
-            message: 'Server error during login'
+            message: 'Login failed. Please try again.'
         });
     }
 };
 
-// LOGOUT
+// ===== LOGOUT =====
 const logoutAdmin = async (req, res) => {
     try {
         if (req.user && req.sessionId) {
@@ -230,6 +276,9 @@ const logoutAdmin = async (req, res) => {
         }
 
         res.clearCookie('adminToken', { path: '/' });
+
+        logger.info(`Logout: ${req.user?.email || 'Unknown'}`);
+
         return res.status(200).json({
             success: true,
             message: 'Logged out successfully'
@@ -244,116 +293,112 @@ const logoutAdmin = async (req, res) => {
     }
 };
 
-// LOGOUT ALL DEVICES - PRINCIPAL ONLY
+// ===== LOGOUT ALL DEVICES =====
 const logoutAllDevices = async (req, res) => {
     try {
-        if (!req.user) {
-            return res.status(401).json({
-                success: false,
-                message: 'Not authenticated'
-            });
-        }
-
-        // Only principal can logout all devices
-        if (!req.user.isPrincipal()) {
-            return res.status(403).json({
-                success: false,
-                message: 'Principal admin privileges required'
-            });
-        }
-
-        // Deactivate all sessions
-        req.user.activeSessions.forEach(session => {
-            session.isActive = false;
-        });
-
+        req.user.removeAllSessions();
         req.user.lastLogout = new Date();
         await req.user.save();
 
         res.clearCookie('adminToken', { path: '/' });
 
-        logger.info(`Principal admin logged out from all devices: ${req.user.email}`);
+        logger.info(`Logout all devices: ${req.user.email}`);
 
         return res.status(200).json({
             success: true,
-            message: 'Logged out from all devices successfully'
+            message: 'Logged out from all devices'
         });
     } catch (error) {
-        logger.error(`Logout all devices error: ${error.message}`);
+        logger.error(`Logout all error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error logging out from all devices'
+            message: 'Failed to logout from all devices'
         });
     }
 };
 
-// GET PROFILE
+// ===== GET PROFILE =====
 const getProfile = async (req, res) => {
     try {
-        if (!req.user) {
-            return res.status(401).json({
+        const admin = await AdminUser.findById(req.user._id)
+            .select('-password -__v')
+            .populate('approvedBy', 'name email');
+
+        if (!admin) {
+            return res.status(404).json({
                 success: false,
-                message: "Authentication required"
+                message: 'Admin not found'
             });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
-            admin: {
-                _id: req.user._id,
-                name: req.user.name,
-                email: req.user.email,
-                role: req.user.role,
-                status: req.user.status,
-                isPrincipal: req.user.isPrincipal(),
-                activeSessions: req.user.activeSessions.filter(s => s.isActive).length,
-                lastLogin: req.user.lastLogin,
-                createdAt: req.user.createdAt,
-                emailNotifications: req.user.emailNotifications
+            data: {
+                _id: admin._id,
+                name: admin.name,
+                email: admin.email,
+                role: admin.role,
+                status: admin.status,
+                isPrincipal: admin.isPrincipal(),
+                activeSessions: admin.activeSessions.filter(s => s.isActive).length,
+                lastLogin: admin.lastLogin,
+                lastPasswordChange: admin.lastPasswordChange,
+                createdAt: admin.createdAt,
+                emailNotifications: admin.emailNotifications,
+                approvedBy: admin.approvedBy,
+                approvedAt: admin.approvedAt
             }
         });
     } catch (error) {
-        logger.error("Get profile error:", error.message);
-        res.status(500).json({
+        logger.error(`Get profile error: ${error.message}`);
+        return res.status(500).json({
             success: false,
-            message: "Error fetching profile"
+            message: 'Failed to fetch profile'
         });
     }
 };
 
-// GET DASHBOARD STATS
+// ===== DASHBOARD STATS =====
 const getDashboardStats = async (req, res) => {
     try {
-        // Mock data - replace with actual database queries
         const stats = {
-            totalBooks: 150,
-            featuredBooks: 12,
-            activeHeroes: 5,
-            totalCategories: 8,
-            recentActivity: [
-                { action: 'Book added', item: 'The Great Adventure', time: new Date() },
-                { action: 'Hero updated', item: 'Main Banner', time: new Date(Date.now() - 3600000) }
-            ]
+            timestamp: new Date()
         };
 
-        // If principal, add admin stats
+        // Principal admins get full stats
         if (req.user.isPrincipal()) {
-            const totalAdmins = await AdminUser.countDocuments({ role: 'admin' });
-            const pendingAdmins = await AdminUser.countDocuments({
+            const [totalAdmins, pendingAdmins, activeAdmins, suspendedAdmins] = await Promise.all([
+                AdminUser.countDocuments({ role: 'admin', isDeleted: false }),
+                AdminUser.countDocuments({ role: 'admin', status: 'pending', isDeleted: false }),
+                AdminUser.countDocuments({ role: 'admin', status: 'approved', isDeleted: false }),
+                AdminUser.countDocuments({ role: 'admin', status: 'suspended', isDeleted: false })
+            ]);
+
+            // Recent registrations
+            const recentRegistrations = await AdminUser.find({
                 role: 'admin',
-                status: 'pending'
-            });
-            const activeAdmins = await AdminUser.countDocuments({
-                role: 'admin',
-                status: 'approved'
-            });
+                isDeleted: false
+            })
+                .select('name email status createdAt')
+                .sort({ createdAt: -1 })
+                .limit(5);
 
             stats.adminStats = {
-                totalAdmins,
-                pendingAdmins,
-                activeAdmins
+                total: totalAdmins,
+                pending: pendingAdmins,
+                active: activeAdmins,
+                suspended: suspendedAdmins
             };
+
+            stats.recentActivity = recentRegistrations;
         }
+
+        // All admins see their own stats
+        stats.personalStats = {
+            activeSessions: req.user.activeSessions.filter(s => s.isActive).length,
+            lastLogin: req.user.lastLogin,
+            accountAge: Math.floor((Date.now() - req.user.createdAt) / (1000 * 60 * 60 * 24))
+        };
 
         return res.status(200).json({
             success: true,
@@ -363,41 +408,88 @@ const getDashboardStats = async (req, res) => {
         logger.error(`Dashboard stats error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error fetching dashboard statistics'
+            message: 'Failed to fetch dashboard statistics'
         });
     }
 };
 
-// GET ACTIVE SESSIONS
+// ===== GET ACTIVE SESSIONS =====
 const getActiveSessions = async (req, res) => {
     try {
         const sessions = req.user.activeSessions
             .filter(session => session.isActive)
             .map(session => ({
                 sessionId: session.sessionId,
-                deviceInfo: session.deviceInfo,
+                deviceInfo: {
+                    browser: session.deviceInfo?.browser,
+                    os: session.deviceInfo?.os,
+                    deviceType: session.deviceInfo?.deviceType,
+                    location: session.deviceInfo?.location
+                },
                 loginTime: session.loginTime,
                 lastActivity: session.lastActivity,
                 isCurrent: session.sessionId === req.sessionId
-            }));
+            }))
+            .sort((a, b) => b.loginTime - a.loginTime);
 
         return res.status(200).json({
             success: true,
-            data: sessions
+            data: {
+                sessions,
+                count: sessions.length
+            }
         });
     } catch (error) {
-        logger.error(`Get active sessions error: ${error.message}`);
+        logger.error(`Get sessions error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error fetching active sessions'
+            message: 'Failed to fetch active sessions'
         });
     }
 };
 
-// UPDATE NOTIFICATION PREFERENCES
+// ===== TERMINATE SESSION =====
+const terminateSession = async (req, res) => {
+    try {
+        const { sessionId } = req.params;
+
+        const session = req.user.activeSessions.find(s => s.sessionId === sessionId);
+        if (!session) {
+            return res.status(404).json({
+                success: false,
+                message: 'Session not found'
+            });
+        }
+
+        req.user.removeSession(sessionId);
+        await req.user.save();
+
+        logger.info(`Session terminated: ${req.user.email} - ${sessionId}`);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Session terminated successfully'
+        });
+    } catch (error) {
+        logger.error(`Terminate session error: ${error.message}`);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to terminate session'
+        });
+    }
+};
+
+// ===== UPDATE NOTIFICATION PREFERENCES =====
 const updateNotificationPreferences = async (req, res) => {
     try {
         const { emailNotifications } = req.body;
+
+        if (!emailNotifications || typeof emailNotifications !== 'object') {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid notification preferences'
+            });
+        }
 
         req.user.emailNotifications = {
             ...req.user.emailNotifications,
@@ -405,6 +497,8 @@ const updateNotificationPreferences = async (req, res) => {
         };
 
         await req.user.save();
+
+        logger.info(`Notification preferences updated: ${req.user.email}`);
 
         return res.status(200).json({
             success: true,
@@ -417,12 +511,12 @@ const updateNotificationPreferences = async (req, res) => {
         logger.error(`Update notifications error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error updating notification preferences'
+            message: 'Failed to update preferences'
         });
     }
 };
 
-// CHANGE PASSWORD
+// ===== CHANGE PASSWORD =====
 const changePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
@@ -430,32 +524,50 @@ const changePassword = async (req, res) => {
         if (!currentPassword || !newPassword) {
             return res.status(400).json({
                 success: false,
-                message: 'Current password and new password are required'
+                message: 'Current and new password are required'
             });
         }
 
+        // Validate new password strength
+        const passwordCheck = validatePasswordStrength(newPassword);
+        if (!passwordCheck.isValid) {
+            return res.status(400).json({
+                success: false,
+                message: 'New password does not meet requirements',
+                errors: passwordCheck.errors
+            });
+        }
+
+        // Get user with password
+        const admin = await AdminUser.findById(req.user._id).select('+password');
+
         // Verify current password
-        const passwordMatch = await req.user.matchPassword(currentPassword);
-        if (!passwordMatch) {
+        const isMatch = await admin.matchPassword(currentPassword);
+        if (!isMatch) {
             return res.status(400).json({
                 success: false,
                 message: 'Current password is incorrect'
             });
         }
 
+        // Check if password was used before
+        const isReused = await admin.isPasswordReused(newPassword);
+        if (isReused) {
+            return res.status(400).json({
+                success: false,
+                message: 'Cannot reuse previous passwords'
+            });
+        }
+
         // Update password
-        req.user.password = newPassword;
+        admin.password = newPassword;
 
-        // Deactivate all other sessions for security
-        req.user.activeSessions.forEach(session => {
-            if (session.sessionId !== req.sessionId) {
-                session.isActive = false;
-            }
-        });
+        // Logout other sessions for security
+        admin.removeAllOtherSessions(req.sessionId);
 
-        await req.user.save();
+        await admin.save();
 
-        logger.info(`Password changed: ${req.user.email}`);
+        logger.info(`Password changed: ${admin.email}`);
 
         return res.status(200).json({
             success: true,
@@ -465,22 +577,206 @@ const changePassword = async (req, res) => {
         logger.error(`Change password error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error changing password'
+            message: 'Failed to change password'
         });
     }
 };
 
-// PRINCIPAL ADMIN: Get pending registrations
+// ===== PASSWORD RESET REQUEST =====
+const requestPasswordReset = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email is required'
+            });
+        }
+
+        const admin = await AdminUser.findOne({
+            email: email.toLowerCase().trim(),
+            status: 'approved',
+            isDeleted: false
+        });
+
+        // Always return success to prevent email enumeration
+        if (!admin) {
+            return res.status(200).json({
+                success: true,
+                message: 'If account exists, reset code has been sent'
+            });
+        }
+
+        // Check rate limiting for password resets
+        if (admin.resetPasswordAttempts >= 3) {
+            return res.status(429).json({
+                success: false,
+                message: 'Too many reset attempts. Please try again later.'
+            });
+        }
+
+        // Generate 6-digit code
+        const resetCode = crypto.randomInt(100000, 999999).toString();
+        admin.resetPasswordToken = resetCode;
+        admin.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+        admin.resetPasswordAttempts = (admin.resetPasswordAttempts || 0) + 1;
+        await admin.save();
+
+        // Send email
+        try {
+            await sendPasswordResetEmail({
+                email: admin.email,
+                name: admin.name,
+                code: resetCode
+            });
+        } catch (emailError) {
+            logger.error(`Password reset email failed: ${emailError.message}`);
+        }
+
+        logger.info(`Password reset requested: ${admin.email}`);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Reset code sent to your email'
+        });
+    } catch (error) {
+        logger.error(`Password reset request error: ${error.message}`);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to process reset request'
+        });
+    }
+};
+
+// ===== VERIFY RESET CODE =====
+const verifyResetCode = async (req, res) => {
+    try {
+        const { email, code } = req.body;
+
+        if (!email || !code) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email and code are required'
+            });
+        }
+
+        const admin = await AdminUser.findOne({
+            email: email.toLowerCase().trim(),
+            resetPasswordToken: code,
+            resetPasswordExpires: { $gt: new Date() },
+            isDeleted: false
+        });
+
+        if (!admin) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid or expired reset code'
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Code verified successfully',
+            data: {
+                email: admin.email,
+                verified: true
+            }
+        });
+    } catch (error) {
+        logger.error(`Verify reset code error: ${error.message}`);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to verify code'
+        });
+    }
+};
+
+// ===== RESET PASSWORD =====
+const resetPassword = async (req, res) => {
+    try {
+        const { email, code, newPassword } = req.body;
+
+        if (!email || !code || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email, code and new password are required'
+            });
+        }
+
+        // Validate password strength
+        const passwordCheck = validatePasswordStrength(newPassword);
+        if (!passwordCheck.isValid) {
+            return res.status(400).json({
+                success: false,
+                message: 'Password does not meet requirements',
+                errors: passwordCheck.errors
+            });
+        }
+
+        const admin = await AdminUser.findOne({
+            email: email.toLowerCase().trim(),
+            resetPasswordToken: code,
+            resetPasswordExpires: { $gt: new Date() },
+            isDeleted: false
+        }).select('+password');
+
+        if (!admin) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid or expired reset code'
+            });
+        }
+
+        // Check if password was used before
+        const isReused = await admin.isPasswordReused(newPassword);
+        if (isReused) {
+            return res.status(400).json({
+                success: false,
+                message: 'Cannot reuse previous passwords'
+            });
+        }
+
+        // Update password
+        admin.password = newPassword;
+        admin.resetPasswordToken = undefined;
+        admin.resetPasswordExpires = undefined;
+        admin.resetPasswordAttempts = 0;
+
+        // Logout all sessions for security
+        admin.removeAllSessions();
+
+        await admin.save();
+
+        logger.info(`Password reset successful: ${admin.email}`);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Password reset successfully. Please login.'
+        });
+    } catch (error) {
+        logger.error(`Password reset error: ${error.message}`);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to reset password'
+        });
+    }
+};
+
+// ===== PRINCIPAL: GET PENDING REGISTRATIONS =====
 const getPendingRegistrations = async (req, res) => {
     try {
-        const pendingAdmins = await AdminUser.find({ status: 'pending' })
+        const pendingAdmins = await AdminUser.find({
+            status: 'pending',
+            isDeleted: false
+        })
             .select('name email createdAt')
             .sort({ createdAt: -1 });
 
         return res.status(200).json({
             success: true,
             data: {
-                pendingRegistrations: pendingAdmins,
+                registrations: pendingAdmins,
                 count: pendingAdmins.length
             }
         });
@@ -488,18 +784,21 @@ const getPendingRegistrations = async (req, res) => {
         logger.error(`Get pending registrations error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error fetching pending registrations'
+            message: 'Failed to fetch pending registrations'
         });
     }
 };
 
-// PRINCIPAL ADMIN: Approve admin registration
+// ===== PRINCIPAL: APPROVE ADMIN =====
 const approveAdmin = async (req, res) => {
     try {
         const { adminId } = req.params;
-        const principalAdmin = req.user;
 
-        const adminToApprove = await AdminUser.findById(adminId);
+        const adminToApprove = await AdminUser.findOne({
+            _id: adminId,
+            isDeleted: false
+        });
+
         if (!adminToApprove) {
             return res.status(404).json({
                 success: false,
@@ -515,7 +814,7 @@ const approveAdmin = async (req, res) => {
         }
 
         adminToApprove.status = 'approved';
-        adminToApprove.approvedBy = principalAdmin._id;
+        adminToApprove.approvedBy = req.user._id;
         adminToApprove.approvedAt = new Date();
         await adminToApprove.save();
 
@@ -524,13 +823,13 @@ const approveAdmin = async (req, res) => {
             await sendApprovalNotification({
                 email: adminToApprove.email,
                 name: adminToApprove.name,
-                approvedBy: principalAdmin.name
+                approvedBy: req.user.name
             });
         } catch (emailError) {
             logger.error(`Approval notification failed: ${emailError.message}`);
         }
 
-        logger.info(`Admin approved: ${adminToApprove.email} by ${principalAdmin.email}`);
+        logger.info(`Admin approved: ${adminToApprove.email} by ${req.user.email}`);
 
         return res.status(200).json({
             success: true,
@@ -539,28 +838,29 @@ const approveAdmin = async (req, res) => {
                 _id: adminToApprove._id,
                 name: adminToApprove.name,
                 email: adminToApprove.email,
-                status: adminToApprove.status,
-                approvedBy: principalAdmin.name,
-                approvedAt: adminToApprove.approvedAt
+                status: adminToApprove.status
             }
         });
     } catch (error) {
         logger.error(`Approve admin error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error approving admin'
+            message: 'Failed to approve admin'
         });
     }
 };
 
-// PRINCIPAL ADMIN: Reject admin registration
+// ===== PRINCIPAL: REJECT ADMIN =====
 const rejectAdmin = async (req, res) => {
     try {
         const { adminId } = req.params;
         const { reason } = req.body;
-        const principalAdmin = req.user;
 
-        const adminToReject = await AdminUser.findById(adminId);
+        const adminToReject = await AdminUser.findOne({
+            _id: adminId,
+            isDeleted: false
+        });
+
         if (!adminToReject) {
             return res.status(404).json({
                 success: false,
@@ -584,13 +884,13 @@ const rejectAdmin = async (req, res) => {
                 email: adminToReject.email,
                 name: adminToReject.name,
                 reason: reason || 'No specific reason provided',
-                rejectedBy: principalAdmin.name
+                rejectedBy: req.user.name
             });
         } catch (emailError) {
             logger.error(`Rejection notification failed: ${emailError.message}`);
         }
 
-        logger.info(`Admin rejected: ${adminToReject.email} by ${principalAdmin.email}`);
+        logger.info(`Admin rejected: ${adminToReject.email} by ${req.user.email}`);
 
         return res.status(200).json({
             success: true,
@@ -600,30 +900,50 @@ const rejectAdmin = async (req, res) => {
         logger.error(`Reject admin error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error rejecting admin'
+            message: 'Failed to reject admin'
         });
     }
 };
 
-// PRINCIPAL ADMIN: Get all admins
+// ===== PRINCIPAL: GET ALL ADMINS =====
 const getAllAdmins = async (req, res) => {
     try {
-        const admins = await AdminUser.find({ role: { $ne: 'principal' } })
-            .select('name email role status lastLogin createdAt approvedBy approvedAt')
-            .populate('approvedBy', 'name email')
-            .sort({ createdAt: -1 });
+        const { status, search, page = 1, limit = 20 } = req.query;
 
-        const activeAdmins = admins.filter(admin => admin.status === 'approved');
-        const pendingAdmins = admins.filter(admin => admin.status === 'pending');
+        const query = {
+            role: { $ne: 'principal' },
+            isDeleted: false
+        };
+
+        if (status) query.status = status;
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+
+        const [admins, total] = await Promise.all([
+            AdminUser.find(query)
+                .select('name email role status lastLogin createdAt approvedBy approvedAt')
+                .populate('approvedBy', 'name email')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(parseInt(limit)),
+            AdminUser.countDocuments(query)
+        ]);
 
         return res.status(200).json({
             success: true,
             data: {
                 admins,
-                stats: {
-                    total: admins.length,
-                    active: activeAdmins.length,
-                    pending: pendingAdmins.length
+                pagination: {
+                    total,
+                    page: parseInt(page),
+                    pages: Math.ceil(total / parseInt(limit)),
+                    limit: parseInt(limit)
                 }
             }
         });
@@ -631,18 +951,21 @@ const getAllAdmins = async (req, res) => {
         logger.error(`Get all admins error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error fetching admins'
+            message: 'Failed to fetch admins'
         });
     }
 };
 
-// PRINCIPAL ADMIN: Suspend/Activate admin
+// ===== PRINCIPAL: TOGGLE ADMIN STATUS =====
 const toggleAdminStatus = async (req, res) => {
     try {
         const { adminId } = req.params;
-        const principalAdmin = req.user;
 
-        const admin = await AdminUser.findById(adminId);
+        const admin = await AdminUser.findOne({
+            _id: adminId,
+            isDeleted: false
+        });
+
         if (!admin) {
             return res.status(404).json({
                 success: false,
@@ -658,22 +981,21 @@ const toggleAdminStatus = async (req, res) => {
         }
 
         // Toggle between approved and suspended
-        admin.status = admin.status === 'approved' ? 'suspended' : 'approved';
+        const newStatus = admin.status === 'approved' ? 'suspended' : 'approved';
+        admin.status = newStatus;
 
-        // If suspending, deactivate all sessions
-        if (admin.status === 'suspended') {
-            admin.activeSessions.forEach(session => {
-                session.isActive = false;
-            });
+        // If suspending, logout all sessions
+        if (newStatus === 'suspended') {
+            admin.removeAllSessions();
         }
 
         await admin.save();
 
-        logger.info(`Admin status toggled: ${admin.email} -> ${admin.status} by ${principalAdmin.email}`);
+        logger.info(`Admin status toggled: ${admin.email} -> ${newStatus} by ${req.user.email}`);
 
         return res.status(200).json({
             success: true,
-            message: `Admin ${admin.status === 'approved' ? 'activated' : 'suspended'} successfully`,
+            message: `Admin ${newStatus === 'approved' ? 'activated' : 'suspended'} successfully`,
             data: {
                 _id: admin._id,
                 email: admin.email,
@@ -684,179 +1006,137 @@ const toggleAdminStatus = async (req, res) => {
         logger.error(`Toggle admin status error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error updating admin status'
+            message: 'Failed to update admin status'
         });
     }
 };
 
-// Password Reset Request
-const requestPasswordReset = async (req, res) => {
+// ===== PRINCIPAL: DELETE ADMIN =====
+const deleteAdmin = async (req, res) => {
     try {
-        const { email } = req.body;
-
-        if (!email) {
-            return res.status(400).json({
-                success: false,
-                message: 'Email is required'
-            });
-        }
+        const { adminId } = req.params;
 
         const admin = await AdminUser.findOne({
-            email: email.toLowerCase().trim(),
-            status: 'approved'
+            _id: adminId,
+            isDeleted: false
         });
 
-        // Always return success to prevent email enumeration
         if (!admin) {
-            return res.status(200).json({
-                success: true,
-                message: 'If an account exists, a reset code has been sent'
+            return res.status(404).json({
+                success: false,
+                message: 'Admin not found'
             });
         }
 
-        // Generate 6-digit code
-        const resetCode = crypto.randomInt(100000, 999999).toString();
-        admin.resetPasswordToken = resetCode;
-        admin.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
-        await admin.save();
-
-        try {
-            await sendPasswordResetEmail({
-                email: admin.email,
-                name: admin.name,
-                code: resetCode
+        if (admin.role === 'principal') {
+            return res.status(403).json({
+                success: false,
+                message: 'Cannot delete principal admin'
             });
-        } catch (emailError) {
-            logger.error(`Password reset email failed: ${emailError.message}`);
         }
+
+        await admin.softDelete(req.user._id);
+
+        logger.info(`Admin deleted: ${admin.email} by ${req.user.email}`);
 
         return res.status(200).json({
             success: true,
-            message: 'Password reset code sent to your email'
+            message: 'Admin deleted successfully'
         });
     } catch (error) {
-        logger.error(`Password reset request error: ${error.message}`);
+        logger.error(`Delete admin error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error requesting password reset'
+            message: 'Failed to delete admin'
         });
     }
 };
 
-// Verify Reset Code
-const verifyResetCode = async (req, res) => {
+// ===== PRINCIPAL: GET ADMIN DETAILS =====
+const getAdminDetails = async (req, res) => {
     try {
-        const { email, code } = req.body;
-
-        if (!email || !code) {
-            return res.status(400).json({
-                success: false,
-                message: 'Email and code are required'
-            });
-        }
+        const { adminId } = req.params;
 
         const admin = await AdminUser.findOne({
-            email: email.toLowerCase().trim(),
-            resetPasswordToken: code,
-            resetPasswordExpires: { $gt: new Date() }
-        });
+            _id: adminId,
+            isDeleted: false
+        })
+            .select('-password -__v')
+            .populate('approvedBy', 'name email');
 
         if (!admin) {
-            return res.status(400).json({
+            return res.status(404).json({
                 success: false,
-                message: 'Invalid or expired reset code'
+                message: 'Admin not found'
             });
         }
+
+        // Get security report
+        const securityReport = await SecurityService.generateSecurityReport(adminId);
 
         return res.status(200).json({
             success: true,
-            message: 'Code verified successfully',
             data: {
-                email: admin.email,
-                tempToken: code
+                admin,
+                securityReport
             }
         });
     } catch (error) {
-        logger.error(`Verify reset code error: ${error.message}`);
+        logger.error(`Get admin details error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error verifying reset code'
+            message: 'Failed to fetch admin details'
         });
     }
 };
 
-// Reset Password with Code
-const resetPassword = async (req, res) => {
+// ===== GET SECURITY REPORT =====
+const getSecurityReport = async (req, res) => {
     try {
-        const { email, code, newPassword } = req.body;
-
-        if (!email || !code || !newPassword) {
-            return res.status(400).json({
-                success: false,
-                message: 'Email, code and new password are required'
-            });
-        }
-
-        const admin = await AdminUser.findOne({
-            email: email.toLowerCase().trim(),
-            resetPasswordToken: code,
-            resetPasswordExpires: { $gt: new Date() }
-        });
-
-        if (!admin) {
-            return res.status(400).json({
-                success: false,
-                message: 'Invalid or expired reset code'
-            });
-        }
-
-        // Update password
-        admin.password = newPassword;
-        admin.resetPasswordToken = undefined;
-        admin.resetPasswordExpires = undefined;
-
-        // Deactivate all sessions for security
-        admin.activeSessions.forEach(session => {
-            session.isActive = false;
-        });
-
-        await admin.save();
-
-        logger.info(`Password reset successful: ${admin.email}`);
+        const report = await SecurityService.generateSecurityReport(req.user._id);
 
         return res.status(200).json({
             success: true,
-            message: 'Password reset successfully. Please login again.'
+            data: report
         });
     } catch (error) {
-        logger.error(`Password reset error: ${error.message}`);
+        logger.error(`Get security report error: ${error.message}`);
         return res.status(500).json({
             success: false,
-            message: 'Error resetting password'
+            message: 'Failed to generate security report'
         });
     }
 };
 
 module.exports = {
+    // Authentication
     registerAdmin,
     loginAdmin,
     logoutAdmin,
     logoutAllDevices,
+
+    // Profile & Settings
     getProfile,
     getDashboardStats,
     getActiveSessions,
+    terminateSession,
     updateNotificationPreferences,
     changePassword,
-    verifyResetCode,
 
-    // Principal Admin functions
+    // Password Reset
+    requestPasswordReset,
+    verifyResetCode,
+    resetPassword,
+
+    // Principal Admin Functions
     getPendingRegistrations,
     approveAdmin,
     rejectAdmin,
     getAllAdmins,
     toggleAdminStatus,
+    deleteAdmin,
+    getAdminDetails,
 
-    // Password reset
-    requestPasswordReset,
-    resetPassword
+    // Security
+    getSecurityReport
 };

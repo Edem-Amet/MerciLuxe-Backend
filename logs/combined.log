@@ -184,3 +184,304 @@
 [2025-10-16T20:59:15.196Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
 [2025-10-16T20:59:24.389Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
 [2025-10-16T20:59:24.957Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-10-16T21:05:53.729Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-10-16T21:05:54.131Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/pending-registrations
+[2025-10-24T03:49:03.035Z] [SUCCESS] Principal admin created for Merciluxe Gifthub | Data: {
+  "email": "merciluxe99@gmail.com",
+  "name": "Principal Admin",
+  "system": "Merciluxe Gifthub"
+}
+[2025-10-24T03:50:02.287Z] [WARN] Suspicious activity detected for merciluxe99@gmail.com: Login at unusual hours
+[2025-10-24T03:50:05.133Z] [INFO] Email sent to merciluxe99@gmail.com: 🚨 Security Alert - Merciluxe
+[2025-10-24T03:50:05.135Z] [INFO] Security alert email sent to merciluxe99@gmail.com
+[2025-10-24T03:50:05.138Z] [WARN] Security threats detected for merciluxe99@gmail.com: | Data: [
+  "Login at unusual hours"
+]
+[2025-10-24T03:50:05.519Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.4
+[2025-10-24T03:50:07.753Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T03:50:36.871Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:50:36.902Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:50:36.919Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:50:37.418Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:50:37.499Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:50:37.692Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:50:42.989Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/profile
+[2025-10-24T03:50:43.556Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/profile
+[2025-10-24T03:50:43.632Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:50:43.643Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:50:43.656Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:50:44.143Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:50:44.188Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:50:44.670Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:50:44.700Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:50:45.804Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:50:47.213Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:50:51.269Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:52:17.790Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:52:17.821Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:17.822Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:18.332Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:18.333Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:18.443Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:52:32.029Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:32.035Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:32.041Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:52:32.509Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:32.511Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:32.710Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:52:40.669Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:40.671Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:40.677Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:52:41.117Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:41.121Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:52:41.332Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:52:49.888Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:52:50.474Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T03:52:50.475Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T03:52:56.110Z] [DEBUG] Authenticated: merciluxe99@gmail.com - POST /api/admin/logout
+[2025-10-24T03:52:56.269Z] [INFO] Logout: merciluxe99@gmail.com
+[2025-10-24T03:55:47.015Z] [INFO] Email sent to merciluxe99@gmail.com: 🔑 Password Reset Code - Merciluxe
+[2025-10-24T03:55:47.018Z] [INFO] Password reset requested: merciluxe99@gmail.com
+[2025-10-24T03:56:20.391Z] [INFO] Password reset successful: merciluxe99@gmail.com
+[2025-10-24T03:56:30.700Z] [WARN] Suspicious activity detected for merciluxe99@gmail.com: Login at unusual hours
+[2025-10-24T03:56:34.120Z] [INFO] Email sent to merciluxe99@gmail.com: 🚨 Security Alert - Merciluxe
+[2025-10-24T03:56:34.123Z] [INFO] Security alert email sent to merciluxe99@gmail.com
+[2025-10-24T03:56:34.128Z] [WARN] Security threats detected for merciluxe99@gmail.com: | Data: [
+  "Login at unusual hours"
+]
+[2025-10-24T03:56:34.309Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.4
+[2025-10-24T03:56:34.909Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:56:34.910Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:56:34.917Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:56:35.362Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:56:35.369Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:56:35.564Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:56:36.544Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T03:56:39.543Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:58:28.361Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:58:28.369Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:58:28.372Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:58:28.837Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:58:28.876Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:58:29.036Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:58:40.960Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:58:40.962Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:58:40.973Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:58:41.437Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:58:41.441Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T03:58:41.626Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:59:28.657Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T03:59:33.368Z] [DEBUG] Authenticated: merciluxe99@gmail.com - POST /api/admin/logout
+[2025-10-24T03:59:33.647Z] [INFO] Logout: merciluxe99@gmail.com
+[2025-10-24T04:02:58.204Z] [INFO] Email sent to merciluxe99@gmail.com: 🔔 New Admin Registration - Merciluxe
+[2025-10-24T04:02:58.205Z] [INFO] New admin registration: edenamet18@gmail.com
+[2025-10-24T04:03:09.763Z] [WARN] Suspicious activity detected for merciluxe99@gmail.com: Login at unusual hours
+[2025-10-24T04:03:11.795Z] [INFO] Email sent to merciluxe99@gmail.com: 🚨 Security Alert - Merciluxe
+[2025-10-24T04:03:11.796Z] [INFO] Security alert email sent to merciluxe99@gmail.com
+[2025-10-24T04:03:11.801Z] [WARN] Security threats detected for merciluxe99@gmail.com: | Data: [
+  "Login at unusual hours"
+]
+[2025-10-24T04:03:11.967Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.4
+[2025-10-24T04:03:12.532Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:03:12.540Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:03:12.545Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:03:13.038Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:03:13.039Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:03:13.224Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:03:15.422Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T04:03:33.584Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/profile
+[2025-10-24T04:03:34.128Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/profile
+[2025-10-24T04:03:34.155Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:03:34.172Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:03:34.177Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:03:35.311Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:03:35.320Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:03:35.354Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:03:36.797Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:03:36.804Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:03:36.805Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:05:46.329Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/profile
+[2025-10-24T04:05:46.940Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/profile
+[2025-10-24T04:05:47.466Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:05:47.487Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:05:47.490Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:05:48.020Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:05:48.030Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:05:48.154Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:05:48.609Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:05:48.613Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:05:48.895Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:05:53.695Z] [DEBUG] Authenticated: merciluxe99@gmail.com - PATCH /api/admin/admins/68fafa6f1d471fe580295073/approve
+[2025-10-24T04:05:53.697Z] [INFO] Principal admin access: merciluxe99@gmail.com - PATCH /api/admin/admins/68fafa6f1d471fe580295073/approve
+[2025-10-24T04:05:56.294Z] [INFO] Email sent to edenamet18@gmail.com: ✅ Admin Registration Approved - Merciluxe
+[2025-10-24T04:05:56.296Z] [INFO] Admin approved: edenamet18@gmail.com by merciluxe99@gmail.com
+[2025-10-24T04:05:56.726Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:05:56.728Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:06:05.169Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:06:07.486Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T04:06:07.487Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T04:06:10.446Z] [DEBUG] Authenticated: merciluxe99@gmail.com - PATCH /api/admin/admins/68fafa6f1d471fe580295073/toggle-status
+[2025-10-24T04:06:10.448Z] [INFO] Principal admin access: merciluxe99@gmail.com - PATCH /api/admin/admins/68fafa6f1d471fe580295073/toggle-status
+[2025-10-24T04:06:10.767Z] [INFO] Admin status toggled: edenamet18@gmail.com -> suspended by merciluxe99@gmail.com
+[2025-10-24T04:06:11.166Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T04:06:11.169Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T04:06:14.286Z] [DEBUG] Authenticated: merciluxe99@gmail.com - PATCH /api/admin/admins/68fafa6f1d471fe580295073/toggle-status
+[2025-10-24T04:06:14.292Z] [INFO] Principal admin access: merciluxe99@gmail.com - PATCH /api/admin/admins/68fafa6f1d471fe580295073/toggle-status
+[2025-10-24T04:06:14.646Z] [INFO] Admin status toggled: edenamet18@gmail.com -> approved by merciluxe99@gmail.com
+[2025-10-24T04:06:15.055Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T04:06:15.057Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T04:06:22.893Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:06:26.052Z] [DEBUG] Authenticated: merciluxe99@gmail.com - POST /api/admin/logout-all
+[2025-10-24T04:06:26.222Z] [INFO] Logout all devices: merciluxe99@gmail.com
+[2025-10-24T04:08:12.439Z] [WARN] Suspicious activity detected for merciluxe99@gmail.com: Login at unusual hours
+[2025-10-24T04:08:14.766Z] [INFO] Email sent to merciluxe99@gmail.com: 🚨 Security Alert - Merciluxe
+[2025-10-24T04:08:14.768Z] [INFO] Security alert email sent to merciluxe99@gmail.com
+[2025-10-24T04:08:14.771Z] [WARN] Security threats detected for merciluxe99@gmail.com: | Data: [
+  "Login at unusual hours"
+]
+[2025-10-24T04:08:15.001Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.4
+[2025-10-24T04:08:15.491Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:08:15.497Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:08:15.499Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:08:15.978Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:08:15.980Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:08:16.141Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:08:17.725Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T04:08:17.727Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-10-24T04:08:17.740Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T04:08:58.439Z] [DEBUG] Authenticated: merciluxe99@gmail.com - POST /api/admin/logout-all
+[2025-10-24T04:08:58.611Z] [INFO] Logout all devices: merciluxe99@gmail.com
+[2025-10-24T04:10:36.690Z] [INFO] Email sent to merciluxe99@gmail.com: 🔔 New Admin Registration - Merciluxe
+[2025-10-24T04:10:36.692Z] [INFO] New admin registration: edemamet18@gmail.com
+[2025-10-24T04:10:47.753Z] [WARN] Suspicious activity detected for merciluxe99@gmail.com: Login at unusual hours
+[2025-10-24T04:10:49.833Z] [INFO] Email sent to merciluxe99@gmail.com: 🚨 Security Alert - Merciluxe
+[2025-10-24T04:10:49.836Z] [INFO] Security alert email sent to merciluxe99@gmail.com
+[2025-10-24T04:10:49.838Z] [WARN] Security threats detected for merciluxe99@gmail.com: | Data: [
+  "Login at unusual hours"
+]
+[2025-10-24T04:10:50.027Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.4
+[2025-10-24T04:10:50.624Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:10:50.636Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:10:50.646Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:10:51.130Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:10:51.131Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:10:51.259Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:10:52.086Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T04:10:53.523Z] [DEBUG] Authenticated: merciluxe99@gmail.com - PATCH /api/admin/admins/68fafc39865c357a4dfa7eeb/approve
+[2025-10-24T04:10:53.524Z] [INFO] Principal admin access: merciluxe99@gmail.com - PATCH /api/admin/admins/68fafc39865c357a4dfa7eeb/approve
+[2025-10-24T04:10:55.823Z] [INFO] Email sent to edemamet18@gmail.com: ✅ Admin Registration Approved - Merciluxe
+[2025-10-24T04:10:55.827Z] [INFO] Admin approved: edemamet18@gmail.com by merciluxe99@gmail.com
+[2025-10-24T04:10:56.207Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:10:56.208Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:10:56.473Z] [DEBUG] Authenticated: merciluxe99@gmail.com - PATCH /api/admin/admins/68fafc39865c357a4dfa7eeb/approve
+[2025-10-24T04:10:56.474Z] [INFO] Principal admin access: merciluxe99@gmail.com - PATCH /api/admin/admins/68fafc39865c357a4dfa7eeb/approve
+[2025-10-24T04:11:07.485Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:11:15.010Z] [DEBUG] Authenticated: merciluxe99@gmail.com - POST /api/admin/logout-all
+[2025-10-24T04:11:15.204Z] [INFO] Logout all devices: merciluxe99@gmail.com
+[2025-10-24T04:11:38.610Z] [WARN] Suspicious activity detected for edemamet18@gmail.com: Login at unusual hours
+[2025-10-24T04:11:42.082Z] [INFO] Email sent to edemamet18@gmail.com: 🚨 Security Alert - Merciluxe
+[2025-10-24T04:11:42.085Z] [INFO] Security alert email sent to edemamet18@gmail.com
+[2025-10-24T04:11:42.087Z] [WARN] Security threats detected for edemamet18@gmail.com: | Data: [
+  "Login at unusual hours"
+]
+[2025-10-24T04:11:42.261Z] [INFO] Successful login: edemamet18@gmail.com from 172.20.10.4
+[2025-10-24T04:11:42.731Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:11:43.100Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:11:44.242Z] [INFO] Email sent to edemamet18@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T04:11:49.046Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:12:26.826Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/profile
+[2025-10-24T04:12:27.557Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/profile
+[2025-10-24T04:12:41.323Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:12:41.683Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:12:56.523Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:12:56.900Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:14:42.478Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:14:42.903Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:15:31.004Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/profile
+[2025-10-24T04:15:31.863Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/profile
+[2025-10-24T04:18:56.875Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/profile
+[2025-10-24T04:18:57.595Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/profile
+[2025-10-24T04:19:15.743Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/profile
+[2025-10-24T04:19:16.463Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/profile
+[2025-10-24T04:19:34.833Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:19:35.176Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:19:36.743Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:19:37.191Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:19:40.873Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/profile
+[2025-10-24T04:19:41.516Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/profile
+[2025-10-24T04:19:41.674Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:19:41.993Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:19:43.854Z] [DEBUG] Authenticated: edemamet18@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:19:53.991Z] [DEBUG] Authenticated: edemamet18@gmail.com - POST /api/admin/logout
+[2025-10-24T04:19:54.144Z] [INFO] Logout: edemamet18@gmail.com
+[2025-10-24T04:24:18.253Z] [WARN] Suspicious activity detected for merciluxe99@gmail.com: Login at unusual hours
+[2025-10-24T04:24:20.410Z] [INFO] Email sent to merciluxe99@gmail.com: 🚨 Security Alert - Merciluxe
+[2025-10-24T04:24:20.415Z] [INFO] Security alert email sent to merciluxe99@gmail.com
+[2025-10-24T04:24:20.417Z] [WARN] Security threats detected for merciluxe99@gmail.com: | Data: [
+  "Login at unusual hours"
+]
+[2025-10-24T04:24:20.639Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.4
+[2025-10-24T04:24:21.290Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:24:21.308Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:24:21.310Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:24:21.781Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:24:21.782Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:24:21.972Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:24:22.813Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-10-24T04:28:09.675Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:09.678Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:09.689Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:28:10.169Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:10.171Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:10.345Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:28:14.224Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/sessions
+[2025-10-24T04:28:14.586Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/sessions
+[2025-10-24T04:28:14.592Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/security/report
+[2025-10-24T04:28:15.144Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/security/report
+[2025-10-24T04:28:27.206Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/sessions
+[2025-10-24T04:28:27.615Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/security/report
+[2025-10-24T04:28:41.184Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/profile
+[2025-10-24T04:28:41.760Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/profile
+[2025-10-24T04:28:41.953Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:41.971Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:42.030Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:28:42.729Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:42.737Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:42.880Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:28:44.020Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:28:44.029Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:44.041Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:48.624Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:28:48.632Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:48.633Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:49.164Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:49.166Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:28:49.310Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:28:51.827Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/sessions
+[2025-10-24T04:28:52.232Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/sessions
+[2025-10-24T04:28:52.237Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/security/report
+[2025-10-24T04:28:52.784Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/security/report
+[2025-10-24T04:29:28.725Z] [DEBUG] Authenticated: merciluxe99@gmail.com - POST /api/admin/password/change
+[2025-10-24T04:29:34.927Z] [DEBUG] Authenticated: merciluxe99@gmail.com - POST /api/admin/password/change
+[2025-10-24T04:29:36.537Z] [INFO] Password changed: merciluxe99@gmail.com
+[2025-10-24T04:29:39.023Z] [DEBUG] Authenticated: merciluxe99@gmail.com - POST /api/admin/logout
+[2025-10-24T04:29:39.125Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:29:39.127Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:29:39.133Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:29:39.307Z] [INFO] Logout: merciluxe99@gmail.com
+[2025-10-24T04:29:39.645Z] [WARN] Auth failure: Session expired or invalid - IP: 172.20.10.4 - Path: /api/admin/admins/pending
+[2025-10-24T04:29:40.747Z] [WARN] Auth failure: Session expired or invalid - IP: 172.20.10.4 - Path: /api/admin/dashboard/stats
+[2025-10-24T04:29:58.166Z] [WARN] Suspicious activity detected for merciluxe99@gmail.com: Login at unusual hours
+[2025-10-24T04:30:00.311Z] [INFO] Email sent to merciluxe99@gmail.com: 🚨 Security Alert - Merciluxe
+[2025-10-24T04:30:00.313Z] [INFO] Security alert email sent to merciluxe99@gmail.com
+[2025-10-24T04:30:00.315Z] [WARN] Security threats detected for merciluxe99@gmail.com: | Data: [
+  "Login at unusual hours"
+]
+[2025-10-24T04:30:00.479Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.4
+[2025-10-24T04:30:00.974Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:30:00.980Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:30:00.990Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:30:01.458Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:30:01.460Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-10-24T04:30:01.639Z] [DEBUG] Authenticated: merciluxe99@gmail.com - GET /api/admin/dashboard/stats
+[2025-10-24T04:30:03.267Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe

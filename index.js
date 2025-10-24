@@ -30,12 +30,9 @@ const allowedOrigins = [...new Set([
 
 const corsOptions = {
     origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps or Postman)
         if (!origin) return callback(null, true);
 
-        // Check against allowed origins
         const isAllowed = allowedOrigins.some(allowedOrigin => {
-            // Support wildcard domains
             if (allowedOrigin.includes('*')) {
                 const regex = new RegExp(allowedOrigin.replace('*', '.*'));
                 return regex.test(origin);
@@ -53,10 +50,11 @@ const corsOptions = {
         }
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // ✅ PATCH added
     allowedHeaders: ['Content-Type', 'Authorization'],
     optionsSuccessStatus: 200
 };
+
 
 app.use(cors(corsOptions));
 
