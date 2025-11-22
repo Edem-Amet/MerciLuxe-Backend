@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    'http://172.20.10.4:5173',
+    'http://172.20.10.2:5173',
     'https://merciluxegift.store',
     'https://www.merciluxegift.store',
     'https://merciluxe-frontend.onrender.com',
@@ -174,6 +174,7 @@ const souvenirRoutes = require('./routes/SouvenirRoutes');
 const BeadRoutes = require('./routes/BeadRoutes');
 const SpecialRoutes = require('./routes/SpecialRoutes');
 const packageRequestRoutes = require('./routes/PackageRequestRoutes');
+const Products = require('./routes/ProductRoutes');
 const AdminRoutes = require('./routes/AdminRoutes');
 
 // === Mount Routes ===
@@ -187,6 +188,7 @@ app.use('/api/cooperate', cooperateRoutes);
 app.use('/api/souvenirs', souvenirRoutes);
 app.use('/api/beads', BeadRoutes);
 app.use('/api/special', SpecialRoutes);
+app.use('/api/products', Products)
 app.use('/api/packagerequest', packageRequestRoutes);
 app.use('/api/admin', AdminRoutes);
 

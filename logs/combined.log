@@ -568,3 +568,59 @@
 [2025-10-24T07:06:18.565Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
 [2025-10-24T07:06:19.976Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
 [2025-10-24T07:06:33.049Z] [INFO] Logout all devices: merciluxe99@gmail.com
+[2025-10-24T07:41:57.043Z] [WARN] Auth failure: Session expired or invalid - IP: 172.20.10.1 - Path: /api/admin/profile
+[2025-10-27T21:33:54.497Z] [WARN] Auth failure: Invalid token - IP: 172.20.10.1 - Path: /api/admin/profile
+[2025-11-22T11:48:30.542Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.2
+[2025-11-22T11:48:31.882Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T11:48:32.546Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T11:48:34.401Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-11-22T12:03:18.435Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T13:06:18.740Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T13:06:19.397Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T13:06:20.373Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T14:40:53.934Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T14:40:54.862Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T14:40:57.485Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T14:53:37.539Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T14:53:38.874Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T14:53:39.864Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:03:14.891Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:03:15.649Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:03:16.312Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:04:06.784Z] [INFO] Successful login: merciluxe99@gmail.com from 172.20.10.1
+[2025-11-22T15:04:07.814Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:04:10.084Z] [INFO] Email sent to merciluxe99@gmail.com: 🔐 New Login Alert - Merciluxe
+[2025-11-22T15:04:21.263Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:04:21.282Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:04:46.782Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:04:46.792Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:05:27.115Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:05:27.120Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:06:20.947Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:06:21.027Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:06:28.607Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins
+[2025-11-22T15:06:38.551Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:06:39.272Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:09:14.151Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:09:14.335Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:09:31.610Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:09:31.637Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:09:38.982Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:09:39.003Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:11:24.807Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:11:24.835Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:11:32.866Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:11:32.966Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:12:26.806Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:12:28.094Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:12:29.553Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:13:02.051Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:13:02.744Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:13:03.922Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:13:35.972Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:13:36.536Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:15:32.502Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:15:32.584Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:16:17.424Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:16:18.199Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
+[2025-11-22T15:16:18.866Z] [INFO] Principal admin access: merciluxe99@gmail.com - GET /api/admin/admins/pending
